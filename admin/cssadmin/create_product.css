@@ -1,0 +1,112 @@
+.upload-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around; /* Distribute space evenly */
+}
+.file-upload-wrapper {
+    border: 2px dashed #007bff;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    margin: 10px;
+    width: 200px; /* Set a fixed width for the upload area */
+}
+.file-upload-text {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+.file-upload-input {
+    display: none; /* Hide the default file input */
+}
+.preview-image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+}
+.remove-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    display: none; /* Initially hidden */
+}
+
+.wrapper .page-content {
+    min-height: auto ;
+}
+.card{
+    margin: 2rem 4rem;
+}
+/* ----------------------------style for css----------------------------------- */
+       
+.form-select{
+     background-color: transparent;
+     border-color: #dc3545;
+    
+}
+.form-status{ 
+     padding: 0.3rem 1rem!important;
+     
+     font-size: 0.8rem !important;
+
+}
+        .dropdown-menu {
+            background-color: #1f1f1f;
+        }
+
+        .dropdown-menu .dropdown-item {
+            color: #fff;
+            background-color: #dc3545;
+        }
+
+        .dropdown-menu .dropdown-item:hover {
+            background-color: #cc781f;
+        }
+
+    
+
+        .filter-dropdown {
+            display: flex;
+            justify-content: center;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px;
+            background-color: #28a745;
+            color: white;
+            border-radius: 5px;
+            display: none;
+            z-index: 1000;
+        }
+
+        .notification i {
+            margin-right: 10px;
+        }
+
+        .table .no-product-row {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #ff5722;
+        }
+
+        .delete-btn {
+            color: #dc3545;
+        }
+
+        .delete-btn:hover {
+            color: #fff;
+            background-color: #dc3545;
+        }
+        .d-end{
+          display: flex;
+          align-items: center;
+          justify-content: end;
+        }
+    
