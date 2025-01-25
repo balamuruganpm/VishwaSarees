@@ -161,7 +161,7 @@
         [ single product view]*/
   // Event listener for showing the modal
   $(document).on("click", ".js-show-modal1", function (e) {
-    e.preventDefault();
+    e.preventDefault(); 
 
     $(".js-modal1").addClass("show-modal1");
     $(".js-modal1").removeClass("show-modal1");
@@ -715,34 +715,38 @@
     });
   });
 
-  $(".js-add-to-cart").each(function () {
-    $(this).on("click", function (e) {
-      // Get product details from the modal
-      var m2_nameProduct = $(this).attr("data-productname");
-      var m2_productID = $(this).attr("data-productid");
-      var m2_productQuantity = 1;
-
-      // Check if elements are found correctly
-      if (!m2_productID || !m2_productQuantity) {
-        console.error(
-          "One or more product details are missing. Check the selectors and HTML structure."
-        );
-        return;
-      }
-
-      // Create a product object
-      let product = {
-        id: m2_productID,
-        quantity: m2_productQuantity,
-      };
-
-      // Add the product to the cart
-      addToCart(product);
-
-      // Display a success message
-      swal(m2_nameProduct, "is added to cart! Buy Now Fast!", "success");
-    });
+  $(document).on("click", ".js-add-to-cart", function (e) {
+    e.preventDefault(); // Prevent default anchor behavior if needed
+  
+    // Get product details from the clicked element
+    var m2_nameProduct = $(this).attr("data-productname");
+    var m2_productID = $(this).attr("data-productid");
+    var m2_productQuantity = 1; // Hardcoded quantity
+  
+    // Log the product details for debugging
+    console.log("Product Name:", m2_nameProduct);
+    console.log("Product ID:", m2_productID);
+  
+    // Check if elements are found correctly
+    if (!m2_productID || !m2_nameProduct) {
+      console.error("One or more product details are missing. Check the selectors and HTML structure.");
+      return;
+    }
+  
+    // Create a product object
+    let product = {
+      id: m2_productID,
+      quantity: m2_productQuantity,
+    };  
+  
+    // Add the product to the cart
+    addToCart(product);
+  
+    // Display a success message
+    swal(m2_nameProduct, "is added to cart! Buy Now Fast!", "success");
   });
+  
+  
 })(jQuery);
 
 // new income

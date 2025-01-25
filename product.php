@@ -478,9 +478,9 @@ $result = mysqli_query($conn, $sql);
                             <div class="icon-header-item js-add-to-cart" data-notify="+"
                                 data-productid="<?php echo $row['Product_id']; ?>"
                                     data-productname="<?php echo htmlspecialchars($row['Name']); ?>">
-                                    <i class="zmdi zmdi-shopping-cart"></i>
+                                    <i class="zmdi zmdi-shopping-cart" ></i>
                                     <!-- <p class="add-to-cart-btn">Add to Cart</p> -->
-                                </div>
+                                </div>  
                             </a>
                         </div>
                     </div>
