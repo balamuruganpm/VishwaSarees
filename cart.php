@@ -1,9 +1,17 @@
-
 <style>
     .js-check-btn {
         cursor: pointer;
         background-color: darkgreen !important;
         color: white !important;
+    }
+    .header-cart-item-img{
+        width: 100px;
+        height: 100px;
+
+    }
+    .header-cart-item-img img{
+        width: 100%;
+        height: 100%;
     }
 </style>
 
@@ -31,60 +39,85 @@
                 <div class="header-cart-total w-full p-tb-40" id="cart-total">
                     Total: ₹0.00
                 </div>
-
                 <div class="header-cart-buttons flex-w w-full">
                     <a href="shoping-cart.php"
                         class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10 js-check-btn">
-                        Check Out
+                        Check Out 
                     </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+<!-- mark -->
 <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <script>
-    $(document).ready(function () {
-        function updateCart() {
-            $.ajax({
-                url: 'get-cart.php',
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    if (data.items && data.total) {
-                        let cartHtml = '';
-                        data.items.forEach(function (item) {
-                            cartHtml += `
-                            <li class="header-cart-item flex-w flex-t m-b-12">
-                                <div class="header-cart-item-img">
-                                    <img src="${item.image}" alt="${item.name}">
-                                </div>
-                                <div class="header-cart-item-txt p-t-8">
-                                    <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-                                        ${item.name}
-                                    </a>
-                                    <span class="header-cart-item-info">
-                                        ${item.quantity} x ₹${item.price.toFixed(2)}
-                                    </span>
-                                </div>
-                            </li>
-                        `;
-                        });
-                        $('#cart-items').html(cartHtml);
-                        $('#cart-total').text('Total: ₹' + data.total.toFixed(2));
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error fetching cart data:", error);
+ $(document).ready(function () {
+    function getCartFromLocalStorage() {
+        let cart = [];
+
+        for (let i = 0; i < localStorage.length; i++) {
+            try {
+                let value = JSON.parse(localStorage.getItem(localStorage.key(i)));
+                if (Array.isArray(value)) {
+                    cart = value;
+                    break;
                 }
-            });
+            } catch (e) {
+                console.warn("Skipping invalid JSON:", localStorage.key(i));
+            }
         }
 
-        // Update cart on page load
-        updateCart();
+        return cart;
+    }
+    function updateCart() {
+    let cart = getCartFromLocalStorage();
 
-        // Update cart when an item is added (you'll need to call this function when adding items to cart)
-        window.updateCartDisplay = updateCart;
+    $.ajax({
+        url: 'get-cart.php',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ cart: cart }),
+        dataType: 'json',
+        success: function (data) {
+            console.log("Cart Data Received:", data); // Debugging
+
+            let cartContainer = $('#cart-items');
+            cartContainer.empty(); // Clear old cart data
+
+            if (data.items && data.items.length > 0) {
+                let cartHtml = data.items.map(item => `
+                    <li class="cart-item">
+                        <img src="${item.image}" alt="${item.name}" onerror="this.onerror=null; this.src='fallback.jpg';">
+                        <div class="cart-item-info">
+                            <span class="cart-item-name">${item.name}</span>
+                            <span class="cart-item-quantity">${item.quantity} x ₹${item.price.toFixed(2)}</span>
+                        </div>
+                    </li>
+                `).join('');
+
+                console.log("Generated HTML:", cartHtml); // Debugging
+
+                cartContainer.html(cartHtml);
+                $('#cart-total').text('Total: ₹' + data.total.toFixed(2));
+            } else {
+                cartContainer.html('<p>Your cart is empty.</p>');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Error fetching cart data:", error);
+            console.error("Status:", status);
+            console.error("Response:", xhr.responseText);
+        }
     });
+    }
+
+
+    // Update cart on page load
+    updateCart();
+
+    // Update cart when an item is added
+    window.updateCartDisplay = updateCart;
+});
+
 </script>

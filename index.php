@@ -219,6 +219,30 @@ if (isset($_SESSION['Logined'])) {
 			width: 150px;
 			filter: drop-shadow(0px 0px 2px orange);
 		}
+
+		/* Testimonials Styles */
+		.testimonials {
+			background-color: #f8f9fa;
+			padding: 4rem 0;
+			text-align: center;
+		}
+
+		.testimonials h2 {
+			margin-bottom: 1rem;
+		}
+
+		.testimonial {
+			margin-bottom: 2rem;
+		}
+
+		.testimonial p {
+			font-style: italic;
+		}
+
+		.testimonial .customer-name {
+			font-weight: bold;
+			margin-top: 1rem;
+		}
 	</style>
 </head>
 
@@ -407,6 +431,30 @@ if (isset($_SESSION['Logined'])) {
 		.btn-subscribe:hover {
 			background-color: #0056b3;
 		}
+
+		/* Testimonials Styles */
+		.testimonials {
+			background-color: #f8f9fa;
+			padding: 4rem 0;
+			text-align: center;
+		}
+
+		.testimonials h2 {
+			margin-bottom: 1rem;
+		}
+
+		.testimonial {
+			margin-bottom: 2rem;
+		}
+
+		.testimonial p {
+			font-style: italic;
+		}
+
+		.testimonial .customer-name {
+			font-weight: bold;
+			margin-top: 1rem;
+		}
 	</style>
 
 	<section class="hero">
@@ -428,6 +476,25 @@ if (isset($_SESSION['Logined'])) {
 		</div>
 	</section>
 
+	<!-- Testimonials Section -->
+	<section class="testimonials">
+		<div class="container">
+			<h2>Customer Testimonials</h2>
+			<div class="testimonial">
+				<p>"I absolutely love the sarees from Vishwa Sarees! The quality is top-notch and the designs are beautiful."</p>
+				<div class="customer-name">- Priya S.</div>
+			</div>
+			<div class="testimonial">
+				<p>"Great collection and excellent customer service. I highly recommend Vishwa Sarees to everyone."</p>
+				<div class="customer-name">- Anjali K.</div>
+			</div>
+			<div class="testimonial">
+				<p>"The prices are unbeatable and the sarees are just stunning. I will definitely be shopping here again."</p>
+				<div class="customer-name">- Meera R.</div>
+			</div>
+		</div>
+	</section>
+
 	<!-- Footer -->
 	<?php include_once 'footer.php'; ?>
 
@@ -441,6 +508,8 @@ if (isset($_SESSION['Logined'])) {
 	<a href="https://wa.me/+919994079949" target="_blank" rel="noopener noreferrer">
 		<img src="images/whatsapp_PNG20.png" class="right-whatsapp" width="50px" alt="YUGINII">
 	</a>
+
+	
 
 	<!--===============================================================================================-->
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
@@ -569,8 +638,102 @@ if (isset($_SESSION['Logined'])) {
 			})
 		});
 	</script>
-	<!--===============================================================================================-->
-	<script src="js/main.js"></script>
+
+<script>
+    if (typeof jQuery == 'undefined') {
+        console.error("jQuery is not loaded!");
+    } else {
+        console.log("jQuery is loaded successfully.");
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        setTimeout(() => {
+            if (typeof updateCartDisplay === "function") {
+                console.log("Calling updateCartDisplay...");
+                updateCartDisplay();
+            } else {
+                console.log("updateCartDisplay function not found!");
+            }
+        }, 100); // Small delay to ensure elements exist
+    });
+</script>
+  <!-- Include jQuery if you haven't already -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+$(document).ready(function () {
+    // Function to retrieve the cart data from localStorage
+    function getCartFromLocalStorage() {
+        let cart = [];
+
+        for (let i = 0; i < localStorage.length; i++) {
+            try {
+                let value = JSON.parse(localStorage.getItem(localStorage.key(i)));
+                if (Array.isArray(value)) {
+                    cart = value;
+                    break;
+                }
+            } catch (e) {
+                console.warn("Skipping invalid JSON:", localStorage.key(i));
+            }
+        }
+
+        return cart;
+    }
+
+    // Function to update the cart contents
+    function updateCart() {
+        let cart = getCartFromLocalStorage();
+
+        $.ajax({
+            url: 'get-cart.php',  // Backend URL to fetch the cart data
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ cart: cart }),  // Send cart data to backend
+            dataType: 'json',
+            success: function (data) {
+                console.log("Cart Data Received:", data);  // Debugging
+
+                let cartContainer = $('#cart-items');
+                cartContainer.empty();  // Clear old cart data
+
+                if (data.items && data.items.length > 0) {
+                    let cartHtml = data.items.map(item => `
+                        <li class="cart-item">
+                            <img src="${item.image}" alt="${item.name}" onerror="this.onerror=null; this.src='fallback.jpg';">
+                            <div class="cart-item-info">
+                                <span class="cart-item-name">${item.name}</span>
+                                <span class="cart-item-quantity">${item.quantity} x ₹${item.price.toFixed(2)}</span>
+                            </div>
+                        </li>
+                    `).join('');
+
+                    console.log("Generated HTML:", cartHtml);  // Debugging
+
+                    cartContainer.html(cartHtml);  // Update the cart container with new items
+                    $('#cart-total').text('Total: ₹' + data.total.toFixed(2));  // Update total
+                } else {
+                    cartContainer.html('<p>Your cart is empty.</p>');  // Display empty message if no items
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching cart data:", error);
+                console.error("Status:", status);
+                console.error("Response:", xhr.responseText);
+            }
+        });
+    }
+    // Trigger cart update when an element with class `.zmdi-shopping-cart` is clicked
+    $('.zmdi-shopping-cart').click(function () {
+        updateCart();  // Execute the updateCart function on click
+    });
+    // Initial cart update when page loads
+    updateCart();
+
+    // Allow external call to update the cart display (useful for adding items)
+    window.updateCartDisplay = updateCart;
+});
+</script>
 
 </body>
 
