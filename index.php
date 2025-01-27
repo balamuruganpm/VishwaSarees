@@ -1,12 +1,38 @@
 <?php
-session_start();
+// Include connection file
+include('connection.php');
+session_start(); // Start session
 
-if (isset($_SESSION['Logined'])) {
+// Handle Login and Registration
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+	if (isset($_POST['login_phone']) && isset($_POST['login_password'])) {
+		// Login Process
+		$phone = $_POST['login_phone'];
+		$password = $_POST['login_password'];
 
-} else {
-	$_SESSION['Logined'] = "Unsuccess";
+		// Query to check user credentials
+		$query = "SELECT * FROM users WHERE phone = '$phone'";
+		$result = mysqli_query($conn, $query);
+
+		if (mysqli_num_rows($result) == 1) {
+			$row = mysqli_fetch_assoc($result);
+			if (password_verify($password, $row['password'])) {
+				// Successful login
+				$_SESSION['user_id'] = $row['id']; // Store user ID in session
+				$_SESSION['user_name'] = $row['name']; // Optionally store user name
+				$_SESSION['phone'] = $phone; // Store phone in session
+				header("Location: checkout.php"); // Redirect to checkout page
+				exit();
+			} else {
+				$loginError = "Invalid phone number or password.";
+			}
+		} else {
+			$loginError = "User not found.";
+		}
+	}
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,6 +43,7 @@ if (isset($_SESSION['Logined'])) {
 	<link rel="stylesheet"
 		href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+	<link rel="shortcut icon" href="images/icons/favicon.png" type="image/x-icon">
 	<!--===============================================================================================-->
 	<link rel="icon" type="image/png" href="images/icons/logo.jpg">
 	<!--===============================================================================================-->
@@ -476,24 +503,110 @@ if (isset($_SESSION['Logined'])) {
 		</div>
 	</section>
 
+	<style>
+		/* General styling */
+.testimonials {
+  background-color: #f7f7f7;
+  padding: 60px 20px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+h2 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Testimonial container */
+.testimonial-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 30px;
+  justify-items: center;
+}
+
+.testimonial {
+  background: #fff;
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  max-width: 350px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.testimonial:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial p {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.customer-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin-top: 10px;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .testimonials {
+    padding: 40px 20px;
+  }
+
+  .testimonial-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .testimonial-container {
+    grid-template-columns: 1fr;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+	</style>
 	<!-- Testimonials Section -->
 	<section class="testimonials">
-		<div class="container">
-			<h2>Customer Testimonials</h2>
-			<div class="testimonial">
-				<p>"I absolutely love the sarees from Vishwa Sarees! The quality is top-notch and the designs are beautiful."</p>
-				<div class="customer-name">- Priya S.</div>
-			</div>
-			<div class="testimonial">
-				<p>"Great collection and excellent customer service. I highly recommend Vishwa Sarees to everyone."</p>
-				<div class="customer-name">- Anjali K.</div>
-			</div>
-			<div class="testimonial">
-				<p>"The prices are unbeatable and the sarees are just stunning. I will definitely be shopping here again."</p>
-				<div class="customer-name">- Meera R.</div>
-			</div>
-		</div>
-	</section>
+  <div class="container">
+    <h2>What Our Customers Say</h2>
+    <div class="testimonial-container">
+      <div class="testimonial">
+        <p>"I absolutely love the sarees from Vishwa Sarees! The quality is top-notch and the designs are beautiful."</p>
+        <div class="customer-name">- Priya S.</div>
+      </div>
+      <div class="testimonial">
+        <p>"Great collection and excellent customer service. I highly recommend Vishwa Sarees to everyone."</p>
+        <div class="customer-name">- Anjali K.</div>
+      </div>
+      <div class="testimonial">
+        <p>"The prices are unbeatable and the sarees are just stunning. I will definitely be shopping here again."</p>
+        <div class="customer-name">- Meera R.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 	<!-- Footer -->
 	<?php include_once 'footer.php'; ?>

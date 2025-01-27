@@ -1,3 +1,58 @@
+<?php
+// Include connection file
+include('connection.php');
+
+// Handle Login and Registration
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_POST['login_phone']) && isset($_POST['login_password'])) {
+        // Login Process
+        $phone = $_POST['login_phone'];
+        $password = $_POST['login_password'];
+
+        // Query to check user credentials
+        $query = "SELECT * FROM users WHERE phone = '$phone'";
+        $result = mysqli_query($conn, $query);
+
+        if (mysqli_num_rows($result) == 1) {
+            $row = mysqli_fetch_assoc($result);
+            if (password_verify($password, $row['password'])) {
+                // Successful login
+                session_start();
+                $_SESSION['user_id'] = $row['id'];
+                $_SESSION['phone'] = $phone;
+                header("Location: profile.php"); // Redirect to profile page
+                exit();
+            } else {
+                $loginError = "Invalid phone number or password.";
+            }
+        } else {
+            $loginError = "User not found.";
+        }
+    } elseif (isset($_POST['register_name']) && isset($_POST['register_phone']) && isset($_POST['register_password'])) {
+        // Registration Process
+        $name = $_POST['register_name'];
+        $phone = $_POST['register_phone'];
+        $password = password_hash($_POST['register_password'], PASSWORD_DEFAULT);
+
+        // Check if phone already exists
+        $checkQuery = "SELECT * FROM users WHERE phone = '$phone'";
+        $checkResult = mysqli_query($conn, $checkQuery);
+
+        if (mysqli_num_rows($checkResult) == 0) {
+            // Insert new user
+            $registerQuery = "INSERT INTO users (name, phone, password) VALUES ('$name', '$phone', '$password')";
+            if (mysqli_query($conn, $registerQuery)) {
+                $registerSuccess = "Registration successful! You can now log in.";
+            } else {
+                $registerError = "Registration failed. Please try again.";
+            }
+        } else {
+            $registerError = "Phone number already registered.";
+        }
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -89,21 +144,21 @@
 <body>
     <div class="container animate__animated animate__fadeIn">
         <!-- Login Form -->
-        <div id="login-form">
+        <div id="login-form" class="form-section">
             <center>
                 <img src="./images/icons/logo1.png" alt="logo" width="150">
             </center>
             <br>
             <h2 class="text-center pb-4">Login Now</h2>
-            <form id="loginForm" novalidate method="post" action="logined.php">
+            <form method="post" action="index.php">
                 <div class="form-group">
                     <label for="login-phone">Phone Number</label>
-                    <input type="tel" class="form-control" id="login-phone" name="phone" pattern="\d{10}" placeholder="Enter phone number" required>
+                    <input type="tel" class="form-control" id="login-phone" name="login_phone" pattern="\d{10}" placeholder="Enter phone number" required>
                     <div class="invalid-feedback">Please enter a valid 10-digit phone number (without +91).</div>
                 </div>
                 <div class="form-group password-toggle">
                     <label for="login-password">Password</label>
-                    <input type="password" class="form-control" id="login-password" name="password" placeholder="Enter password" required>
+                    <input type="password" class="form-control" id="login-password" name="login_password" placeholder="Enter password" required>
                     <span class="toggle-password" onclick="togglePasswordVisibility('login-password')">
                         <img src="https://img.icons8.com/ios-glyphs/30/000000/visible.png" alt="Toggle Password Visibility">
                     </span>
@@ -111,41 +166,50 @@
                 <button type="submit" class="btn btn-custom btn-block">Login</button>
                 <span class="toggle-link" onclick="toggleForms()">Create a new account</span>
             </form>
+            <?php if (isset($loginError)) {
+                echo "<div class='alert alert-danger'>$loginError</div>";
+            } ?>
         </div>
 
         <!-- Registration Form -->
-        <div id="register-form" class="d-none">
+        <div id="register-form" class="form-section d-none">
             <center>
                 <img src="./images/icons/logo1.png" alt="logo" width="150">
             </center>
             <br>
             <h2 class="text-center">Register</h2>
-            <form id="registerForm" novalidate method="post" action="register.php">
+            <form method="post" action="checkout.php">
                 <div class="form-group">
                     <label for="register-name">Name</label>
-                    <input type="text" class="form-control" id="register-name" name="name" placeholder="Enter your name" required>
-                    <div class="invalid-feedback">Name is required.</div>
+                    <input type="text" class="form-control" id="register-name" name="register_name"
+                        placeholder="Enter your name" required>
                 </div>
                 <div class="form-group">
                     <label for="register-phone">Phone Number</label>
-                    <input type="tel" class="form-control" id="register-phone" name="phone" pattern="\d{10}" placeholder="Enter phone number" required>
+                    <input type="tel" class="form-control" id="register-phone" name="register_phone" pattern="\d{10}"
+                        placeholder="Enter phone number" required>
                     <div class="invalid-feedback">Please enter a valid 10-digit phone number (without +91).</div>
                 </div>
                 <div class="form-group password-toggle">
                     <label for="register-password">Password</label>
-                    <input type="password" class="form-control" id="register-password" name="password" placeholder="Enter password" required>
+                    <input type="password" class="form-control" id="register-password" name="register_password"
+                        placeholder="Enter password" required>
                     <span class="toggle-password" onclick="togglePasswordVisibility('register-password')">
-                        <img src="https://img.icons8.com/ios-glyphs/30/000000/visible.png" alt="Toggle Password Visibility">
+                        <img src="https://img.icons8.com/ios-glyphs/30/000000/visible.png"
+                            alt="Toggle Password Visibility">
                     </span>
                 </div>
                 <button type="submit" class="btn btn-custom btn-block">Register</button>
                 <span class="toggle-link" onclick="toggleForms()">Already have an account? Login</span>
             </form>
+            <?php if (isset($registerSuccess)) {
+                echo "<div class='alert alert-success'>$registerSuccess</div>";
+            } ?>
+            <?php if (isset($registerError)) {
+                echo "<div class='alert alert-danger'>$registerError</div>";
+            } ?>
         </div>
 
-        <!-- Success and Error Messages -->
-        <div id="successMessage" class="alert alert-success d-none"></div>
-        <div id="errorMessage" class="alert alert-danger d-none"></div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

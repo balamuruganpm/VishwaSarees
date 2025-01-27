@@ -1,36 +1,27 @@
 <?php
-function add_to_cart($product_id, $quantity = 1)
+// Example function to update the order status
+function updateOrderStatus($order_id, $status)
 {
-    if (!isset($_SESSION['cart'])) {
-        $_SESSION['cart'] = array();
-    }
+    // Your database logic to update the order status
+    // Example SQL query:
+    // UPDATE orders SET status = '{$status}' WHERE order_id = {$order_id};
 
-    if (isset($_SESSION['cart'][$product_id])) {
-        $_SESSION['cart'][$product_id] += $quantity;
-    } else {
-        $_SESSION['cart'][$product_id] = $quantity;
-    }
-}
-
-function get_cart_total()
-{
+    // Ensure you have a valid connection to your database and execute the query.
+    // For example, using PDO:
     global $pdo;
-    $total = 0;
-    if (isset($_SESSION['cart'])) {
-        foreach ($_SESSION['cart'] as $product_id => $quantity) {
-            $stmt = $pdo->prepare("SELECT price FROM products WHERE id = ?");
-            $stmt->execute([$product_id]);
-            $product = $stmt->fetch();
-            $total += $product['price'] * $quantity;
-        }
-    }
-    return $total;
+    $stmt = $pdo->prepare("UPDATE orders SET status = :status WHERE order_id = :order_id");
+    $stmt->execute(['status' => $status, 'order_id' => $order_id]);
 }
+/*************  ✨ Codeium Command ⭐  *************/
+/**
+ * Calculates the total cost of all items in the cart.
+ *
+ * This function iterates through each item in the session's cart,
+ * retrieves the price from the database, and sums up the total cost
+ * based on the quantity of each item.
+ *
+ * @global object $pdo The database connection.
+ * @return float The total cost of items in the cart.
+ */
 
-function generate_upi_qr($amount)
-{
-    // In a real-world scenario, you would integrate with a UPI provider
-    // For this example, we'll just return a placeholder string
-    return "upi://pay?pa=merchant@upi&pn=Merchant%20Name&am=$amount&cu=INR";
-}
-?>
+/******  b827be82-8fc4-4113-a9bb-db531a54aa34  *******/?>

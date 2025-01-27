@@ -55,6 +55,7 @@ if (isset($_POST['delete_product'])) {
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <meta name="description" content="A fully responsive premium admin dashboard template" />
      <meta name="author" content="deva" />
+     <title>Vishwa Sarees - Product</title>
      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -87,135 +88,419 @@ if (isset($_POST['delete_product'])) {
      <!-- START Wrapper -->
      <div class="wrapper">
 
-          <!-- ========== Topbar Start ========== -->
-          <header class="topbar">
-               <div class="container-fluid">
-                    <div class="navbar-header">
-                         <div class="d-flex align-items-center">
-                              <!-- Menu Toggle Button -->
-                              <div class="topbar-item">
-                                   <button type="button" class="button-toggle-menu me-2">
-                                        <iconify-icon icon="solar:hamburger-menu-broken" class="fs-24 align-middle"></iconify-icon>
-                                   </button>
-                              </div>
-
-                              <!-- Menu Toggle Button -->
-                              <div class="topbar-item">
-                                   <h4 class="fw-bold topbar-button pe-none text-uppercase mb-0">product's view</h4>
-                              </div>
-                         </div>
-
-                         <div class="d-flex align-items-center gap-1">
-
-                              <!-- Theme Color (Light/Dark) -->
-                              <div class="topbar-item">
-                                   <button type="button" class="topbar-button" id="light-dark-mode">
-                                        <iconify-icon icon="solar:moon-bold-duotone" class="fs-24 align-middle"></iconify-icon>
-                                   </button>
-                              </div>
-                              <!-- User -->
-                                <!-- User -->
-                                <div class="dropdown topbar-item">
-                                   <a type="button" class="topbar-button" id="page-header-user-dropdown" href="./logout.php" aria-haspopup="true" aria-expanded="false">
-                                        <span class="d-flex align-items-center">
-                                             <img class="rounded-circle" width="32" src="../images/icons/3.png" alt="avatar-3">
-                                        </span>
-                                   </a>
-                                   <div class="dropdown-menu dropdown-menu-end">
-                                        <!-- item-->
-                                        <h6 class="dropdown-header">Welcome Admin!</h6>
-
-                                        <a class="dropdown-item " style="background-color: black; color:red;" href="./logout.php">
-                                             <i class="bx bx-log-out fs-18 align-middle me-1"></i><span class="align-middle">Logout</span>
-                                        </a>
-                                   </div>
-                              </div>
-
-                              <!-- App Search-->
-                              <form class="app-search d-none d-md-block ms-2">
-                                   <div class="position-relative">
-                                     
-                                   </div>
-                              </form>
-                         </div>
+        <!-- ========== Topbar Start ========== -->
+        <header class="topbar">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <div class="d-flex align-items-center">
+                        <!-- Menu Toggle Button -->
+                        <div class="topbar-item">
+                            <button type="button" class="button-toggle-menu me-2">
+                                <iconify-icon icon="solar:hamburger-menu-broken" class="fs-24 align-middle"></iconify-icon>
+                            </button>
+                        </div>
+        
+                        <!-- Menu Toggle Button -->
+                        <div class="topbar-item">
+                            <h4 class="fw-bold topbar-button pe-none text-uppercase mb-0">Products View</h4>
+                        </div>
                     </div>
-               </div>
-          </header>
-
-
-          <!-- ========== App Menu Start ========== -->
-          <div class="main-nav">
-               <!-- Sidebar Logo -->
-               <div class="logo-box">
-                    <a href="./dashboard.php" class="logo-dark">
-                         <img src="../images/icons/logo.jpg" class="logo-sm" alt="logo sm">
-                         <img src="../images/icons/LOGOIMG.png"  class="logo-lg" alt="logo dark">
-                    </a>
-
-                    <a href="./dashboard.php" class="logo-light">
-                         <img src="../images/icons/logo.jpg" class="logo-sm" alt="logo sm">
-                         <img src="../images/icons/LOGOIMG.png" class="logo-lg" alt="logo light">
-                    </a>
-               </div>
-
-               <!-- Menu Toggle Button (sm-hover) -->
-               <button type="button" class="button-sm-hover" aria-label="Show Full Sidebar">
-                    <iconify-icon icon="solar:double-alt-arrow-right-bold-duotone" class="button-sm-hover-icon"></iconify-icon>
-               </button>
-
-               <div class="scrollbar" data-simplebar>
-                    <ul class="navbar-nav" id="navbar-nav">
-
-                         <li class="menu-title">General</li>
-
-                         <li class="nav-item">
-                              <a class="nav-link" href="./dashboard.php">
-                                   <span class="nav-icon">
-                                        <iconify-icon icon="solar:widget-5-bold-duotone"></iconify-icon>
-                                   </span>
-                                   <span class="nav-text"> Dashboard </span>
-                              </a>
-                         </li>
-
-                         <li class="nav-item">
-                              <a class="nav-link menu-arrow" href="#sidebarProducts" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarProducts">
-                                   <span class="nav-icon">
-                                        <iconify-icon icon="solar:t-shirt-bold-duotone"></iconify-icon>
-                                   </span>
-                                   <span class="nav-text"> Products </span>
-                              </a>
-                              <div class="collapse" id="sidebarProducts">
-                                   <ul class="nav sub-navbar-nav">
-                                        <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="./view_product.php">View</a>
-                                        </li>
-                                        <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="create_product.php">Create</a>
-                                        </li>
-                                   </ul>
-                              </div>
-                         </li>
-
-                         <li class="nav-item">
-                              <a class="nav-link menu-arrow" href="#sidebarCategory" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarCategory">
-                                   <span class="nav-icon">
-                                        <iconify-icon icon="solar:clipboard-list-bold-duotone"></iconify-icon>
-                                   </span>
-                                   <span class="nav-text"> Category </span>
-                              </a>
-                              <div class="collapse" id="sidebarCategory">
-                                   <ul class="nav sub-navbar-nav">
-                                        <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="./getdata.php">Get Statement</a>
-                                        </li>                         
-                                   </ul>
-                              </div>
-                 
-                       </ul>
-               </div>
-          </div>
-          <!-- ========== App Menu End ========== -->
-
+        
+                    <div class="d-flex align-items-center gap-1">
+        
+                        <!-- Theme Color (Light/Dark) -->
+                        <div class="topbar-item">
+                            <button type="button" class="topbar-button" id="light-dark-mode">
+                                <iconify-icon icon="solar:moon-bold-duotone" class="fs-24 align-middle"></iconify-icon>
+                            </button>
+                        </div>
+                        <!-- Notification -->
+                        <div id="notification" class="notification">
+                            <i class="fas fa-check-circle"></i> <span id="notificationText"></span>
+                        </div>
+        
+        
+                        <!-- User -->
+                        <div class="dropdown topbar-item">
+                            <a type="button" class="topbar-button" id="page-header-user-dropdown" data-bs-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <span class="d-flex align-items-center">
+                                    <img class="rounded-circle" width="32" src="../images/icons/3.jpg" alt="avatar-3">
+                                </span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <!-- item-->
+                                <h6 class="dropdown-header">Welcome Admin!</h6>
+        
+                                <a class="dropdown-item text-danger" href="./logout.php">
+                                    <i class="bx bx-log-out fs-18 align-middle me-1"></i><span
+                                        class="align-middle">Logout</span>
+                                </a>
+                            </div>
+                        </div>
+        
+                        <!-- App Search-->
+                        <form class="app-search d-none d-md-block ms-2">
+                            <div class="position-relative">
+                                <!-- <input type="search" class="form-control" placeholder="Search..." autocomplete="off" value="">
+                                                <iconify-icon icon="solar:magnifer-linear" class="search-widget-icon"></iconify-icon> -->
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Activity Timeline -->
+        <div>
+            <div class="offcanvas offcanvas-end border-0" tabindex="-1" id="theme-activity-offcanvas"
+                style="max-width: 450px; width: 100%;">
+                <div class="d-flex align-items-center bg-primary p-3 offcanvas-header">
+                    <h5 class="text-white m-0 fw-semibold">Activity Stream</h5>
+                    <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
+        
+                <div class="offcanvas-body p-0">
+                    <div data-simplebar class="h-100 p-4">
+                        <div class="position-relative ms-2">
+                            <span class="position-absolute start-0  top-0 border border-dashed h-100"></span>
+                            <div class="position-relative ps-4">
+                                <div class="mb-4">
+                                    <span
+                                        class="position-absolute start-0 avatar-sm translate-middle-x bg-danger d-inline-flex align-items-center justify-content-center rounded-circle text-light fs-20"><iconify-icon
+                                            icon="iconamoon:folder-check-duotone"></iconify-icon></span>
+                                    <div class="ms-2">
+                                        <h5 class="mb-1 text-dark fw-semibold fs-15 lh-base">Report-Fix / Update </h5>
+                                        <p class="d-flex align-items-center">Add 3 files to <span
+                                                class=" d-flex align-items-center text-primary ms-1"><iconify-icon
+                                                    icon="iconamoon:file-light"></iconify-icon> Tasks</span></p>
+                                        <div class="bg-light bg-opacity-50 rounded-2 p-2">
+                                            <div class="row">
+                                                <div class="col-lg-6 border-end border-light">
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <i class="bx bxl-figma fs-20 text-red"></i>
+                                                        <a href="#!" class="text-dark fw-medium">Concept.fig</a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <i class="bx bxl-file-doc fs-20 text-success"></i>
+                                                        <a href="#!" class="text-dark fw-medium">larkon.docs</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <h6 class="mt-2 text-muted">Monday , 4:24 PM</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="position-relative ps-4">
+                                <div class="mb-4">
+                                    <span
+                                        class="position-absolute start-0 avatar-sm translate-middle-x bg-success d-inline-flex align-items-center justify-content-center rounded-circle text-light fs-20"><iconify-icon
+                                            icon="iconamoon:check-circle-1-duotone"></iconify-icon></span>
+                                    <div class="ms-2">
+                                        <h5 class="mb-1 text-dark fw-semibold fs-15 lh-base">Project Status
+                                        </h5>
+                                        <p class="d-flex align-items-center mb-0">Marked<span
+                                                class=" d-flex align-items-center text-primary mx-1"><iconify-icon
+                                                    icon="iconamoon:file-light"></iconify-icon> Design </span> as <span
+                                                class="badge bg-success-subtle text-success px-2 py-1 ms-1"> Completed</span>
+                                        </p>
+                                        <div class="d-flex align-items-center gap-3 mt-1 bg-light bg-opacity-50 p-2 rounded-2">
+                                            <a href="#!" class="fw-medium text-dark">UI/UX Figma Design</a>
+                                            <div class="ms-auto">
+                                                <a href="#!" class="fw-medium text-primary fs-18" data-bs-toggle="tooltip"
+                                                    data-bs-title="Download" data-bs-placement="bottom"><iconify-icon
+                                                        icon="iconamoon:cloud-download-duotone"></iconify-icon></a>
+                                            </div>
+                                        </div>
+                                        <h6 class="mt-3 text-muted">Monday , 3:00 PM</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="position-relative ps-4">
+                                <div class="mb-4">
+                                    <span
+                                        class="position-absolute start-0 avatar-sm translate-middle-x bg-primary d-inline-flex align-items-center justify-content-center rounded-circle text-light fs-16">UI</span>
+                                    <div class="ms-2">
+                                        <h5 class="mb-1 text-dark fw-semibold fs-15">Larkon Application UI v2.0.0 <span
+                                                class="badge bg-primary-subtle text-primary px-2 py-1 ms-1"> Latest</span>
+                                        </h5>
+                                        <p>Get access to over 20+ pages including a dashboard layout, charts, kanban board,
+                                            calendar, and pre-order E-commerce & Marketing pages.</p>
+                                        <div class="mt-2">
+                                            <a href="#!" class="btn btn-light btn-sm">Download Zip</a>
+                                        </div>
+                                        <h6 class="mt-3 text-muted">Monday , 2:10 PM</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="position-relative ps-4">
+                                <div class="mb-4">
+                                    <span
+                                        class="position-absolute start-0 translate-middle-x bg-success bg-gradient d-inline-flex align-items-center justify-content-center rounded-circle text-light fs-20"><img
+                                            src="assets/images/users/avatar-7.jpg" alt="avatar-5"
+                                            class="avatar-sm rounded-circle"></span>
+                                    <div class="ms-2">
+                                        <h5 class="mb-0 text-dark fw-semibold fs-15 lh-base">Alex Smith Attached Photos
+                                        </h5>
+                                        <div class="row g-2 mt-2">
+                                            <div class="col-lg-4">
+                                                <a href="#!">
+                                                    <img src="assets/images/small/img-6.jpg" alt="" class="img-fluid rounded">
+                                                </a>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <a href="#!">
+                                                    <img src="assets/images/small/img-3.jpg" alt="" class="img-fluid rounded">
+                                                </a>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <a href="#!">
+                                                    <img src="assets/images/small/img-4.jpg" alt="" class="img-fluid rounded">
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <h6 class="mt-3 text-muted">Monday 1:00 PM</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="position-relative ps-4">
+                                <div class="mb-4">
+                                    <span
+                                        class="position-absolute start-0 translate-middle-x bg-success bg-gradient d-inline-flex align-items-center justify-content-center rounded-circle text-light fs-20"><img
+                                            src="assets/images/users/avatar-6.jpg" alt="avatar-5"
+                                            class="avatar-sm rounded-circle"></span>
+                                    <div class="ms-2">
+                                        <h5 class="mb-0 text-dark fw-semibold fs-15 lh-base">Rebecca J. added a new team member
+                                        </h5>
+                                        <p class="d-flex align-items-center gap-1"><iconify-icon
+                                                icon="iconamoon:check-circle-1-duotone" class="text-success"></iconify-icon>
+                                            Added a new member to Front Dashboard</p>
+                                        <h6 class="mt-3 text-muted">Monday 10:00 AM</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="position-relative ps-4">
+                                <div class="mb-4">
+                                    <span
+                                        class="position-absolute start-0 avatar-sm translate-middle-x bg-warning d-inline-flex align-items-center justify-content-center rounded-circle text-light fs-20"><iconify-icon
+                                            icon="iconamoon:certificate-badge-duotone"></iconify-icon></span>
+                                    <div class="ms-2">
+                                        <h5 class="mb-0 text-dark fw-semibold fs-15 lh-base">Achievements
+                                        </h5>
+                                        <p class="d-flex align-items-center gap-1 mt-1">Earned a <iconify-icon
+                                                icon="iconamoon:certificate-badge-duotone"
+                                                class="text-danger fs-20"></iconify-icon>" Best Product Award"</p>
+                                        <h6 class="mt-3 text-muted">Monday 9:30 AM</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#!" class="btn btn-outline-dark w-100">View All</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Sidebar (Theme Settings) -->
+        <div>
+            <div class="offcanvas offcanvas-end border-0" tabindex="-1" id="theme-settings-offcanvas">
+                <div class="d-flex align-items-center bg-primary p-3 offcanvas-header">
+                    <h5 class="text-white m-0">Theme Settings</h5>
+                    <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
+        
+                <div class="offcanvas-body p-0">
+                    <div data-simplebar class="h-100">
+                        <div class="p-3 settings-bar">
+        
+                            <div>
+                                <h5 class="mb-3 font-16 fw-semibold">Color Scheme</h5>
+        
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="data-bs-theme" id="layout-color-light"
+                                        value="light">
+                                    <label class="form-check-label" for="layout-color-light">Light</label>
+                                </div>
+        
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="data-bs-theme" id="layout-color-dark"
+                                        value="dark">
+                                    <label class="form-check-label" for="layout-color-dark">Dark</label>
+                                </div>
+                            </div>
+        
+                            <div>
+                                <h5 class="my-3 font-16 fw-semibold">Topbar Color</h5>
+        
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="data-topbar-color"
+                                        id="topbar-color-light" value="light">
+                                    <label class="form-check-label" for="topbar-color-light">Light</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="data-topbar-color" id="topbar-color-dark"
+                                        value="dark">
+                                    <label class="form-check-label" for="topbar-color-dark">Dark</label>
+                                </div>
+                            </div>
+        
+        
+                            <div>
+                                <h5 class="my-3 font-16 fw-semibold">Menu Color</h5>
+        
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="data-menu-color" id="leftbar-color-light"
+                                        value="light">
+                                    <label class="form-check-label" for="leftbar-color-light">
+                                        Light
+                                    </label>
+                                </div>
+        
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="data-menu-color" id="leftbar-color-dark"
+                                        value="dark">
+                                    <label class="form-check-label" for="leftbar-color-dark">
+                                        Dark
+                                    </label>
+                                </div>
+                            </div>
+        
+                            <div>
+                                <h5 class="my-3 font-16 fw-semibold">Sidebar Size</h5>
+        
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="data-menu-size" id="leftbar-size-default"
+                                        value="default">
+                                    <label class="form-check-label" for="leftbar-size-default">
+                                        Default
+                                    </label>
+                                </div>
+        
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="data-menu-size" id="leftbar-size-small"
+                                        value="condensed">
+                                    <label class="form-check-label" for="leftbar-size-small">
+                                        Condensed
+                                    </label>
+                                </div>
+        
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="data-menu-size" id="leftbar-hidden"
+                                        value="hidden">
+                                    <label class="form-check-label" for="leftbar-hidden">
+                                        Hidden
+                                    </label>
+                                </div>
+        
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="data-menu-size"
+                                        id="leftbar-size-small-hover-active" value="sm-hover-active">
+                                    <label class="form-check-label" for="leftbar-size-small-hover-active">
+                                        Small Hover Active
+                                    </label>
+                                </div>
+        
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="data-menu-size"
+                                        id="leftbar-size-small-hover" value="sm-hover">
+                                    <label class="form-check-label" for="leftbar-size-small-hover">
+                                        Small Hover
+                                    </label>
+                                </div>
+                            </div>
+        
+                        </div>
+                    </div>
+                </div>
+                <div class="offcanvas-footer border-top p-3 text-center">
+                    <div class="row">
+                        <div class="col">
+                            <button type="button" class="btn btn-danger w-100" id="reset-layout">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ========== Topbar End ========== -->
+        
+        <!-- ========== App Menu Start ========== -->
+        <div class="main-nav">
+            <!-- Sidebar Logo -->
+            <div class="logo-box">
+                <a href="./dashboard.php" class="logo-dark">
+                    <img src="../images/icons/logo11.png" class="logo-sm" alt="logo sm">
+                    <img src="../images/icons/logo11.png" class="logo-lg" alt="logo dark">
+                </a>
+        
+                <a href="./dashboard.php" class="logo-light">
+                    <img src="../images/icons/logo11.png" class="logo-sm" alt="logo sm">
+                    <img src="../images/icons/logo11.png" class="logo-lg" alt="logo light">
+                </a>
+            </div>
+        
+            <!-- Menu Toggle Button (sm-hover) -->
+            <button type="button" class="button-sm-hover" aria-label="Show Full Sidebar">
+                <iconify-icon icon="solar:double-alt-arrow-right-bold-duotone" class="button-sm-hover-icon"></iconify-icon>
+            </button>
+        
+            <div class="scrollbar" data-simplebar>
+                <ul class="navbar-nav" id="navbar-nav">
+        
+                    <li class="menu-title">General</li>
+        
+                    <li class="nav-item">
+                        <a class="nav-link" href="./dashboard.php">
+                            <span class="nav-icon">
+                                <iconify-icon icon="solar:widget-5-bold-duotone"></iconify-icon>
+                            </span>
+                            <span class="nav-text"> Dashboard </span>
+                        </a>
+                    </li>
+        
+                    <li class="nav-item">
+                        <a class="nav-link menu-arrow" href="#sidebarProducts" data-bs-toggle="collapse" role="button"
+                            aria-expanded="false" aria-controls="sidebarProducts">
+                            <span class="nav-icon">
+                                <iconify-icon icon="solar:t-shirt-bold-duotone"></iconify-icon>
+                            </span>
+                            <span class="nav-text"> Products </span>
+                        </a>
+                        <div class="collapse" id="sidebarProducts">
+                            <ul class="nav sub-navbar-nav">
+                                <li class="sub-nav-item">
+                                    <a class="sub-nav-link" href="./view_product.php">View</a>
+                                </li>
+                                <li class="sub-nav-item">
+                                    <a class="sub-nav-link" href="create_product.php">Create</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+        
+                    <li class="nav-item">
+                        <a class="nav-link menu-arrow" href="#sidebarCategory" data-bs-toggle="collapse" role="button"
+                            aria-expanded="false" aria-controls="sidebarCategory">
+                            <span class="nav-icon">
+                                <iconify-icon icon="solar:clipboard-list-bold-duotone"></iconify-icon>
+                            </span>
+                            <span class="nav-text"> Category </span>
+                        </a>
+                        <div class="collapse" id="sidebarCategory">
+                            <ul class="nav sub-navbar-nav">
+                                <li class="sub-nav-item">
+                                    <a class="sub-nav-link" href="./getdata.php">Get Statement</a>
+                                </li>
+                            </ul>
+                        </div>
+        
+                </ul>
+            </div>
+        </div>
           <!-- ==================================================== -->
           <!-- Start right Content here -->
           <!-- ==================================================== -->
@@ -256,93 +541,95 @@ if (isset($_POST['delete_product'])) {
                               </div>
                               <div class="row">
                               <?php if (mysqli_num_rows($product_result) > 0): ?>
-    <div class="row">
-        <?php while ($product = mysqli_fetch_assoc($product_result)): ?>
-            <?php
-                // Get discount percentage and original price
-                $discountPercentage = $product['discount_p'];
-                $originalPrice = $product['Price'];
+        <div class="row">
+            <?php while ($product = mysqli_fetch_assoc($product_result)): ?>
+                    <?php
+                    // Get discount percentage and original price
+                    $discountPercentage = $product['discount_p'];
+                    $originalPrice = $product['Price'];
 
-                // Calculate discounted price
-                $discountedPrice = $originalPrice * (1 - $discountPercentage / 100);
-            ?>
-             <div class="col-sm-6 col-md-3 col-lg-3 col-xxl-2 ">
-                <div class="card">
-                    <div id="carouselExampleControls_<?php echo $product['Product_id']; ?>" class="carousel slide" data-ride="carousel">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active" data-bs-interval="2000">
-                                <img class="d-block w-100" src="../images/product/<?php echo $product['Img_filename1']; ?>" alt="<?php echo htmlspecialchars($product['Name']); ?>">
+                    // Calculate discounted price
+                    $discountedPrice = $originalPrice * (1 - $discountPercentage / 100);
+                    ?>
+                     <div class="col-sm-6 col-md-3 col-lg-3 col-xxl-2 ">
+                        <div class="card">
+                            <div id="carouselExampleControls_<?php echo $product['Product_id']; ?>" class="carousel slide" data-ride="carousel">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active" data-bs-interval="2000">
+                                        <img class="d-block w-100" src="../images/product/<?php echo $product['Img_filename1']; ?>" alt="<?php echo htmlspecialchars($product['Name']); ?>">
+                                    </div>
+                                    <?php if (!empty($product['Img_filename2'])): ?>
+                                            <div class="carousel-item" data-bs-interval="2000">
+                                                <img class="d-block w-100" src="../images/product/<?php echo $product['Img_filename2']; ?>" alt="<?php echo htmlspecialchars($product['Name']); ?>">
+                                            </div>
+                                    <?php endif; ?>
+                                    <?php if (!empty($product['Img_filename3'])): ?>
+                                            <div class="carousel-item" data-bs-interval="2000">
+                                                <img class="d-block w-100" src="../images/product/<?php echo $product['Img_filename3']; ?>" alt="<?php echo htmlspecialchars($product['Name']); ?>">
+                                            </div>
+                                    <?php endif; ?>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls_<?php echo $product['Product_id']; ?>" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls_<?php echo $product['Product_id']; ?>" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                </button>
                             </div>
-                            <?php if (!empty($product['Img_filename2'])): ?>
-                                <div class="carousel-item" data-bs-interval="2000">
-                                    <img class="d-block w-100" src="../images/product/<?php echo $product['Img_filename2']; ?>" alt="<?php echo htmlspecialchars($product['Name']); ?>">
-                                </div>
-                            <?php endif; ?>
-                            <?php if (!empty($product['Img_filename3'])): ?>
-                                <div class="carousel-item" data-bs-interval="2000">
-                                    <img class="d-block w-100" src="../images/product/<?php echo $product['Img_filename3']; ?>" alt="<?php echo htmlspecialchars($product['Name']); ?>">
-                                </div>
-                            <?php endif; ?>
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls_<?php echo $product['Product_id']; ?>" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls_<?php echo $product['Product_id']; ?>" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        </button>
-                    </div>
 
-                    <div class="card-body bg-light-subtle rounded-bottom">
-                        <a class="text-dark fw-medium fs-16">ID: <?php echo htmlspecialchars($product['Product_id']); ?></a><br>
-                        <a class="text-dark fw-medium fs-16" style="text-transform: capitalize;"><?php echo htmlspecialchars($product['Name']); ?></a>
-                        <h4 class="fw-semibold text-dark mt-2 d-flex align-items-center gap-2">
-                            <span class="text-muted text-decoration-line-through">₹<?php echo number_format($originalPrice, 2); ?></span>
-                            ₹<?php echo number_format($discountedPrice, 2); ?>
-                        </h4>
-                        <div class="d-flex gap-2 w-100 justify-content-around align-items-center">
-                                <div class="dropdown">
-                                <a class="text-dark fw-medium fs-16"><small class="text-muted"> (<?php echo $discountPercentage; ?>% Off)</small></a>
+                            <div class="card-body bg-light-subtle rounded-bottom">
+                                <a class="text-dark fw-medium fs-16">ID: <?php echo htmlspecialchars($product['Product_id']); ?></a><br>
+                                <a class="text-dark fw-medium fs-16" style="text-transform: capitalize;"><?php echo htmlspecialchars($product['Name']); ?></a>
+                                <h4 class="fw-semibold text-dark mt-2 d-flex align-items-center gap-2">
+                                    <span class="text-muted text-decoration-line-through">₹<?php echo number_format($originalPrice, 2); ?></span>
+                                    ₹<?php echo number_format($discountedPrice, 2); ?>
+                                </h4>
+                                <div class="d-flex gap-2 w-100 justify-content-around align-items-center">
+                                        <div class="dropdown">
+                                        <a class="text-dark fw-medium fs-16"><small class="text-muted"> (<?php echo $discountPercentage; ?>% Off)</small></a>
 
                          
-                                </div>
-                                <div class="dropdown">
+                                        </div>
+                                        <div class="dropdown">
                                   
-                                        <a class="sub-nav-link" class="btn btn-soft-primary border border-primary-subtle"
-                                        style="border: 2px solid rgb(255, 106, 0); padding:0.4rem 0.8rem; border-radius:5px; color:  rgb(255, 106, 0);"  href="edit_product.php?id=<?php echo $product['Product_id']; ?>">Edit</a>
+                                                <a class="sub-nav-link" class="btn btn-soft-primary border border-primary-subtle"
+                                                style="border: 2px solid rgb(255, 106, 0); padding:0.4rem 0.8rem; border-radius:5px; color:  rgb(255, 106, 0);"  href="edit_product.php?id=<?php echo $product['Product_id']; ?>">Edit</a>
 
                
+                                        </div>
+                                    </div>
+                                <div class="mt-3">
+                                    <div class="d-flex gap-2">
+                               
+                                        <select class="form-select form-status status-dropdown"
+                                                data-product-id="<?php echo $product['Product_id']; ?>">
+                                            <option value="Available" <?php if ($product['Availability'] == 'Available')
+                                                echo 'selected'; ?>>Available</option>
+                                            <option value="Out of stock" <?php if ($product['Availability'] == 'Out of stock')
+                                                echo 'selected'; ?>>Out of stock</option>
+                                        </select>
+                               
+                                    </div>
                                 </div>
                             </div>
-                        <div class="mt-3">
-                            <div class="d-flex gap-2">
-                               
-                                <select class="form-select form-status status-dropdown"
-                                        data-product-id="<?php echo $product['Product_id']; ?>">
-                                    <option value="Available" <?php if ($product['Availability'] == 'Available') echo 'selected'; ?>>Available</option>
-                                    <option value="Out of stock" <?php if ($product['Availability'] == 'Out of stock') echo 'selected'; ?>>Out of stock</option>
-                                </select>
-                               
-                            </div>
+                            <span class="position-absolute top-0 end-0 p-3">
+                                 <!-- prooduct  delete btn  -->
+                                 <button type="button" class="delete-btn btn btn-soft-danger avatar-sm d-inline-flex align-items-center justify-content-center fs-20 rounded-circle" 
+                data-product-id="<?php echo $product['Product_id']; ?>"
+                data-product-name="<?php echo htmlspecialchars($product['Name']); ?>" 
+                data-product-image="<?php echo htmlspecialchars($product['Img_filename1']); ?>"> <!-- Use the first image as example -->
+            <iconify-icon icon="ic:baseline-delete-forever"></iconify-icon>
+        </button>
+
+                            </span>
                         </div>
                     </div>
-                    <span class="position-absolute top-0 end-0 p-3">
-                         <!-- prooduct  delete btn  -->
-                         <button type="button" class="delete-btn btn btn-soft-danger avatar-sm d-inline-flex align-items-center justify-content-center fs-20 rounded-circle" 
-        data-product-id="<?php echo $product['Product_id']; ?>"
-        data-product-name="<?php echo htmlspecialchars($product['Name']); ?>" 
-        data-product-image="<?php echo htmlspecialchars($product['Img_filename1']); ?>"> <!-- Use the first image as example -->
-    <iconify-icon icon="ic:baseline-delete-forever"></iconify-icon>
-</button>
-
-                    </span>
-                </div>
-            </div>
-        <?php endwhile; ?>
-    </div>
+            <?php endwhile; ?>
+        </div>
 <?php else: ?>
-    <div class="no-product-row">
-        <p>No products available</p>
-    </div>
+        <div class="no-product-row">
+            <p>No products available</p>
+        </div>
 <?php endif; ?>
 
                                

@@ -1,70 +1,78 @@
 <?php
-include_once 'connection.php';
+// Include the database connection
+include('connection.php');
 
-$filter = $_POST['filter'] ?? '';
+// Check if a delete request is made
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_order'])) {
+    $order_id_to_delete = $_POST['order_id_to_delete'];
 
-$sql = "SELECT id, Amount, created_at, products, Status FROM orders";
-if ($filter) {
-    $sql .= " WHERE Status = '$filter'";
+    // Delete the order from the database
+    $delete_query = "DELETE FROM orders WHERE id = $order_id_to_delete";
+    if ($conn->query($delete_query) === TRUE) {
+        echo "<div class='alert alert-success'>Order ID: $order_id_to_delete has been deleted successfully.</div>";
+    } else {
+        echo "<div class='alert alert-danger'>Error deleting order: " . $conn->error . "</div>";
+    }
 }
+
+// Fetch all orders from the `orders` table
+$sql = "SELECT * FROM orders";
 $result = $conn->query($sql);
 
+// Start HTML table with Bootstrap styling
+echo "<table class='table table-bordered table-striped' style='padding: 20px;'>
+    <thead class='thead-dark'>
+        <tr>
+            <th>Order ID</th>
+            <th>Customer Name</th>
+            <th>Contact</th>
+            <th>Address</th>
+            <th>Payment Method</th>
+            <th>Total Amount</th>
+            <th>Products</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>";
+
+// Check if there are any results
 if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        $products = json_decode($row['products'], true);
-        $product_details = [];
-
-        foreach ($products as $product) {
-            $product_id = $product['id'];
-
-            // Fetch product details including discount percentage
-            $product_query = "SELECT Name, Img_filename1, Category, Price, discount_p FROM product WHERE Product_id = '$product_id'";
-            $product_result = mysqli_query($conn, $product_query);
-
-            if (mysqli_num_rows($product_result) > 0) {
-                $product_info = mysqli_fetch_assoc($product_result);
-                $product_info['quantity'] = $product['quantity'];
-                
-                // Store product details
-                $product_details[] = $product_info;
-            }
+    // Loop through each row and display in the table
+    while ($row = $result->fetch_assoc()) {
+        // Decode product IDs from JSON and prepare clickable links
+        $product_ids = json_decode($row['product_ids'], true);
+        $product_links = "";
+        foreach ($product_ids as $product_id) {
+            $product_links .= "<a href='http://localhost/VishwaSarees/single_product_view.php?product_id=$product_id' class='text-info'>Product $product_id</a>, ";
         }
+        $product_links = rtrim($product_links, ', '); // Remove trailing comma
 
         echo "<tr>
-        <td><input type='checkbox' class='form-check-input order-checkbox' data-id='{$row['id']}'></td>
-        <td>{$row['id']}</td>
-        <td>{$row['created_at']}</td>
-        <td>";
-        
-foreach ($product_details as $product_detail) {
-    echo "<img src='../images/product/{$product_detail['Img_filename1']}' alt='product-1(1)' class='imgfluid avatar-sm' style='max-width: 50px;'>";
-}
-
-echo "</td>
-        <td>{$row['Amount']}</td>
-        <td>
-            <select class='form-select status-dropdown' onchange=\"updateStatus2({$row['id']}, this.value); window.location.reload();\">
-                <option value='New'" . ($row['Status'] == 'New' ? ' selected' : '') . ">New</option>
-                <option value='Shipping'" . ($row['Status'] == 'Shipping' ? ' selected' : '') . ">Shipping</option>
-                <option value='Delivered'" . ($row['Status'] == 'Delivered' ? ' selected' : '') . ">Delivered</option>
-                <option value='Refunded'" . ($row['Status'] == 'Refunded' ? ' selected' : '') . ">Refunded</option>
-            </select>
-        </td>
-        <td>
-            <a href='single_order_view.php?id={$row['id']}'>
-                <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-check2-square' viewBox='0 0 16 16'>
-                    <path d='M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5z'/>
-                    <path d='m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0'/>
-                </svg>
-            </a>
-        </td>
-    </tr>";
-
+            <td>{$row['id']}</td>
+            <td>{$row['name']}</td>
+            <td>{$row['contact']}</td>
+            <td>{$row['address']}</td>
+            <td>{$row['payment_method']}</td>
+            <td>₹{$row['total_amount']}</td>
+            <td>$product_links</td>
+            <td>
+                <form method='POST' style='display: inline;'>
+                    <input type='hidden' name='order_id_to_delete' value='{$row['id']}'>
+                    <input type='hidden' name='delete_order' value='1'>
+                    <button type='submit' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure you want to delete this order?\")'>
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>";
     }
 } else {
-    echo "<tr><td colspan='6'>No orders found</td></tr>";
+    echo "<tr><td colspan='8' class='text-center'>No orders found</td></tr>";
 }
 
+// Close the table
+echo "</tbody></table>";
+
+// Close the database connection
 $conn->close();
 ?>
-

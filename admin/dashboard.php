@@ -191,7 +191,7 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== "Success") {
                               <div class="dropdown topbar-item">
                                    <a type="button" class="topbar-button" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="d-flex align-items-center">
-                                             <img class="rounded-circle" width="32" src="../images/icons/3.png" alt="avatar-3">
+                                             <img class="rounded-circle" width="32" src="../images/icons/3.jpg" alt="avatar-3">
                                         </span>
                                    </a>
                                    <div class="dropdown-menu dropdown-menu-end">
@@ -457,13 +457,13 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== "Success") {
                <!-- Sidebar Logo -->
                <div class="logo-box">
                     <a href="./dashboard.php" class="logo-dark">
-                         <img src="../images/icons/logo.jpg" class="logo-sm" alt="logo sm">
-                         <img src="../images/icons/LOGOIMG.png"  class="logo-lg" alt="logo dark">
+                         <img src="../images/icons/logo11.png" class="logo-sm" alt="logo sm">
+                         <img src="../images/icons/logo11.png"  class="logo-lg" alt="logo dark">
                     </a>
 
                     <a href="./dashboard.php" class="logo-light">
-                         <img src="../images/icons/logo.jpg" class="logo-sm" alt="logo sm">
-                         <img src="../images/icons/LOGOIMG.png" class="logo-lg" alt="logo light">
+                         <img src="../images/icons/logo11.png" class="logo-sm" alt="logo sm">
+                         <img src="../images/icons/logo11.png" class="logo-lg" alt="logo light">
                     </a>
                </div>
 
@@ -539,48 +539,17 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== "Success") {
                          <div class="col">
                               <div class="card">
                                    <div class="card-body">
-                                        <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex p-2 align-items-center justify-content-between">
                                              <h4 class="card-title">
                                                   Recent Orders
                                                                    <!-- "Select all below" Checkbox -->
-            <div class="d-flex justify-content-end mt-3">
-               <input type="checkbox" id="selectAll" class="form-check-input">
-               <label for="selectAll" class="ms-2">Select all below</label>
-           </div>
-                                             </h4>
-                              
-               <div class="dropdown mt-4 text-center">
-               <button class="btn btn-soft-primary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                   Select Type
-               </button>
-               <ul class="dropdown-menu" aria-labelledby="filterDropdown">
-                   <li><a class="dropdown-item" href="#" onclick="filterOrders('New')">New</a></li>
-                   <li><a class="dropdown-item" href="#" onclick="filterOrders('Shipping')">Shipping</a></li>
-                   <li><a class="dropdown-item" href="#" onclick="filterOrders('Delivered')">Delivered</a></li>
-                   <li><a class="dropdown-item" href="#" onclick="filterOrders('Refunded')">Refunded</a></li>
-               </ul>
-           </div>
                                         </div>
                                    </div>
                                    <!-- end card body -->
                                    <div class="table-responsive table-centered">
-                                        <table class="table  table-hover mb-0">
+                                        <table class="table p-2 table-hover mb-0">
 
-                                             <thead class="bg-light bg-opacity-50">
-                                                  <tr>
-                                                      <th>Select</th>
-                                                      <th class="ps-3">Order ID</th>
-                                                      <th>
-                                                       Date
-                                                  </th>
-                                                  <th>
-                                                       Product
-                                                  </th>
-                                                      <th>Amount</th>
-                                                      <th>Status</th>
-                                                      <th>View Order</th>
-                                                  </tr>
-                                              </thead>
+                                            
                                         
                                              <tbody id="ordersTable">
                                                   <!-- Rows will be inserted here dynamically -->

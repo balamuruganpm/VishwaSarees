@@ -1,11 +1,18 @@
 <?php
 require 'connection.php'; // Assuming this file contains the database connection details
 
+// Check if the dates are set and validate them
 if (isset($_GET['start_date']) && isset($_GET['end_date'])) {
-    $start_date = $_GET['start_date'];
-    $end_date = $_GET['end_date'];
+    $start_date = mysqli_real_escape_string($conn, $_GET['start_date']);
+    $end_date = mysqli_real_escape_string($conn, $_GET['end_date']);
 
-    // Fetch data from the 'Order' table
+    // Validate date format (YYYY-MM-DD)
+    if (!preg_match("/\d{4}-\d{2}-\d{2}/", $start_date) || !preg_match("/\d{4}-\d{2}-\d{2}/", $end_date)) {
+        echo "Invalid date format. Please use YYYY-MM-DD format.";
+        exit;
+    }
+
+    // Fetch data from the 'orders' table based on the selected date range
     $query = "SELECT * FROM `orders` WHERE `created_at` BETWEEN '$start_date' AND '$end_date'";
     $result = mysqli_query($conn, $query);
 

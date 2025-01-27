@@ -11,15 +11,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $query = "SELECT * FROM users WHERE phone = '$phone' AND password = '$password'";
     $result = mysqli_query($conn, $query);
 
-    if (mysqli_num_rows($result) == 1) {
-        // User found, set session and redirect to profile.php
-        $_SESSION['phone'] = $phone;
-        header("Location: profile.php");
-        exit();
-    } else {
-        // Invalid credentials
-        header("Location: index.php?error=Invalid credentials");
-        exit();
-    }
+   if (mysqli_num_rows($result) == 1) {
+    $row = mysqli_fetch_assoc($result); // Fetch user data
+    $_SESSION['user_id'] = $row['id']; // Assuming 'id' is the primary key
+    $_SESSION['phone'] = $phone;       // Store phone for reference
+    header("Location: profile.php");
+    exit();
+}
 }
 ?>

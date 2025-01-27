@@ -1,17 +1,19 @@
 <?php
-session_start();
-include 'connection.php';
+$order_id = $_GET['order_id'];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $order_id = $_POST['order_id'];
+// Assuming you have a function `updateOrderStatus($order_id, $status)` to update the order in the database
+// The "paid" status will be set here.
 
-    // Update order status
-    $update_query = "UPDATE orders SET status = 'paid' WHERE id = ?";
-    $stmt = $conn->prepare($update_query);
-    $stmt->bind_param("i", $order_id);
-    $stmt->execute();
+if ($order_id) {
+    // Example function to update the order status
+    updateOrderStatus($order_id, 'paid');
 
-    header("Location: order-confirmation.php?order_id=" . $order_id);
+    // Redirect to a success page after the payment is confirmed
+    header("Location: payment-success.php?order_id={$order_id}");
+    exit();
+} else {
+    // Redirect to an error page if the order_id is not valid
+    header("Location: payment-failed.php");
     exit();
 }
-
+?>
