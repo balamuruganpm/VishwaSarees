@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 27, 2025 at 08:19 PM
+-- Generation Time: Feb 02, 2025 at 02:11 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -67,7 +67,9 @@ INSERT INTO `orders` (`id`, `name`, `address`, `contact`, `payment_method`, `tot
 (3, 'Balamurugan P M', '2/109, Kombukaran Kadu, Murungapatti, Salem - 636307', '09677804820', 'cod', 5383.77, '[\"31\", \"29\"]', 'Pending'),
 (4, 'Hareeswar', '56 North Old Avenue\nAliquam et amet nis', '07010375329', 'upi', 5383.77, '[\"28\", \"30\"]', 'Pending'),
 (5, 'Hareeswar', '390-7 Mettu Patti Thathanur Vellaiya Gounder Kadu Salem\n390-7 மேட்டுப்பட்டி தத்தனூர் வெள்ளையா கவுண்டர் காடு, சேலம்', '07010375329', 'cod', 5383.77, '[\"30\", \"28\"]', 'Pending'),
-(6, 'Hareeswar', '390-7 Mettu Patti Thathanur Vellaiya Gounder Kadu Salem\n390-7 மேட்டுப்பட்டி தத்தனூர் வெள்ளையா கவுண்டர் காடு, சேலம்', '07010375329', '', 7874.60, '[\"29\", \"31\"]', 'Pending');
+(6, 'Hareeswar', '390-7 Mettu Patti Thathanur Vellaiya Gounder Kadu Salem\n390-7 மேட்டுப்பட்டி தத்தனூர் வெள்ளையா கவுண்டர் காடு, சேலம்', '07010375329', '', 7874.60, '[\"29\", \"31\"]', 'Pending'),
+(7, 'deva proakash', 'skillchemy ceo', '8736618216', '', 5383.77, 'Array', 'Pending'),
+(8, 'krishna', '2/2nuf hcu,c dncic', '8744827538', '', 7812.60, 'Array', 'Pending');
 
 -- --------------------------------------------------------
 
@@ -128,7 +130,7 @@ CREATE TABLE `product` (
 
 INSERT INTO `product` (`Product_id`, `Name`, `Description`, `Price`, `w_data`, `discount_p`, `Img_filename1`, `Img_filename2`, `Img_filename3`, `Img_filename4`, `Img_filename5`, `Img_filename6`, `Category`, `Availability`) VALUES
 (28, 'Rani Pink Mirrorwork Georgette Saree', '{\"Brand\":\"Georgette Saree\",\"Color\":\"Pink\",\"Description\":\"- Rani Pink Saree in Georgette fabric - The Saree is elevated with Mirrorwork embroidery - It comes with an Unstitched blouse - Comes with the Koskii promise of premium quality\",\"Size\":\"Saree: 5.5 Mtrs; Blouse: 0.80 Mtrs \",\"Material\":\"Georgette\",\"Wash Care\":\"Dry Wash Only\"}', 4792, '', 20, 'Women/Rani Pink Mirrorwork Georgette Saree/1.png', 'Women/Rani Pink Mirrorwork Georgette Saree/2.png', 'Women/Rani Pink Mirrorwork Georgette Saree/3.png', 'Women/Rani Pink Mirrorwork Georgette Saree/4.png', 'Women/Rani Pink Mirrorwork Georgette Saree/5.png', 'Women/Rani Pink Mirrorwork Georgette Saree/6.png', 'Women', 'Available'),
-(29, 'Lavender Gotapatti Organza Saree', '{\"Brand\":\"\",\"Color\":\"Lavender \",\"Description\":\"- Lavender Saree in Organza fabric - The Saree is elevated with Gotapatti embroidery - It comes with an Unstitched blouse - Comes with the Koskii promise of premium quality\",\"Material\":\"Organza\",\"Wash Care\":\"Dry Wash Only \",\"Size\":\"Saree: 5.5 Mtrs; Blouse: 0.80 Mtrs \"}', 4490, '', 10, 'Women/Lavender Gotapatti Organza Saree/1.png', 'Women/Lavender Gotapatti Organza Saree/2.png', 'Women/Lavender Gotapatti Organza Saree/3.png', 'Women/Lavender Gotapatti Organza Saree/4.png', 'Women/Lavender Gotapatti Organza Saree/5.png', 'Women/Lavender Gotapatti Organza Saree/6.png', 'Women', 'Available'),
+(29, 'Lavender Gotapatti Organza Saree', '{\"Brand\":\"\",\"Color\":\"Lavender \",\"Description\":\"- Lavender Saree in Organza fabric - The Saree is elevated with Gotapatti embroidery - It comes with an Unstitched blouse - Comes with the Koskii promise of premium quality\",\"Material\":\"Organza\",\"Wash Care\":\"Dry Wash Only \",\"Size\":\"Saree: 5.5 Mtrs; Blouse: 0.80 Mtrs \"}', 4490, '{\"min_product\":0,\"min_price\":0,\"price_ranges\":[],\"max_price\":0}', 14, 'Women/Lavender Gotapatti Organza Saree/1.png', 'Women/Lavender Gotapatti Organza Saree/2.png', 'Women/Lavender Gotapatti Organza Saree/3.png', 'Women/Lavender Gotapatti Organza Saree/4.png', 'Women/Lavender Gotapatti Organza Saree/5.png', 'Women/Lavender Gotapatti Organza Saree/6.png', 'Women', 'Available'),
 (30, 'Pista Green Threadwork Net Designer Saree', '{\"Brand\":\"Threadwork \",\"Size\":\"Saree: 5.5 Mtrs; Blouse: 0.80 Mtrs\",\"Wash Care\":\"Dry Wash Only\",\"Description\":\"- Pista green saree in net fabric - Embellished with threadwork embroidery - Accompanied with a matching unstitched blouse - The blouse worn by the model is for styling purpose only - Comes with the koskii promise of superior quality\",\"Color\":\"Pista Green\"}', 4490, '', 16, 'Women/Pista Green Threadwork Net Designer Saree/1.png', 'Women/Pista Green Threadwork Net Designer Saree/2.png', 'Women/Pista Green Threadwork Net Designer Saree/3.png', 'Women/Pista Green Threadwork Net Designer Saree/4.png', 'Women/Pista Green Threadwork Net Designer Saree/5.png', 'Women/Pista Green Threadwork Net Designer Saree/6.png', 'Women', 'Available'),
 (31, 'Yellow Threadwork Chiffon Saree', '{\"Brand\":\"Chiffon \",\"Size\":\"Saree: 5.5 Mtrs; Blouse: 0.80 Mtrs\",\"Description\":\"- Yellow Saree in Chiffon fabric - The Saree is elevated with Threadwork embroidery - It comes with an Unstitched blouse - Comes with the Koskii promise of premium quality\",\"Material\":\"Chiffon\",\"Color\":\"Yellow\",\"Wash Care\":\"Dry Wash Only\"}', 5789, '', 7, 'Women/Yellow Threadwork Chiffon Saree/1.png', 'Women/Yellow Threadwork Chiffon Saree/2.png', 'Women/Yellow Threadwork Chiffon Saree/3.png', 'Women/Yellow Threadwork Chiffon Saree/4.png', 'Women/Yellow Threadwork Chiffon Saree/5.png', 'Women/Yellow Threadwork Chiffon Saree/6.png', 'Women', 'Available');
 
@@ -248,7 +250,7 @@ ALTER TABLE `cart`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `order_items`
@@ -260,7 +262,7 @@ ALTER TABLE `order_items`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `Product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `Product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `transactions`
