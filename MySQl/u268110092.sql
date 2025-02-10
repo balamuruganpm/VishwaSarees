@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 02, 2025 at 02:11 PM
+-- Generation Time: Feb 10, 2025 at 01:17 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -47,29 +47,26 @@ INSERT INTO `cart` (`cart_id`, `user_id`, `cart_data`) VALUES
 --
 
 CREATE TABLE `orders` (
-  `id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `address` text NOT NULL,
   `contact` varchar(15) NOT NULL,
-  `payment_method` enum('cod','upi') NOT NULL,
+  `payment_method` varchar(50) NOT NULL,
   `total_amount` decimal(10,2) NOT NULL,
-  `product_ids` text DEFAULT NULL,
-  `status` varchar(50) NOT NULL DEFAULT 'Pending'
+  `product_ids` text NOT NULL,
+  `status` varchar(20) DEFAULT 'pending',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `name`, `address`, `contact`, `payment_method`, `total_amount`, `product_ids`, `status`) VALUES
-(1, 'Test Name', 'Test Address', '1234567890', 'cod', 100.00, '[\"29\", \"28\"]', 'Delivered'),
-(2, 'Test Name', 'Test Address', '1234567890', 'cod', 100.00, '[\"30\", \"28\"]', 'Pending'),
-(3, 'Balamurugan P M', '2/109, Kombukaran Kadu, Murungapatti, Salem - 636307', '09677804820', 'cod', 5383.77, '[\"31\", \"29\"]', 'Pending'),
-(4, 'Hareeswar', '56 North Old Avenue\nAliquam et amet nis', '07010375329', 'upi', 5383.77, '[\"28\", \"30\"]', 'Pending'),
-(5, 'Hareeswar', '390-7 Mettu Patti Thathanur Vellaiya Gounder Kadu Salem\n390-7 மேட்டுப்பட்டி தத்தனூர் வெள்ளையா கவுண்டர் காடு, சேலம்', '07010375329', 'cod', 5383.77, '[\"30\", \"28\"]', 'Pending'),
-(6, 'Hareeswar', '390-7 Mettu Patti Thathanur Vellaiya Gounder Kadu Salem\n390-7 மேட்டுப்பட்டி தத்தனூர் வெள்ளையா கவுண்டர் காடு, சேலம்', '07010375329', '', 7874.60, '[\"29\", \"31\"]', 'Pending'),
-(7, 'deva proakash', 'skillchemy ceo', '8736618216', '', 5383.77, 'Array', 'Pending'),
-(8, 'krishna', '2/2nuf hcu,c dncic', '8744827538', '', 7812.60, 'Array', 'Pending');
+INSERT INTO `orders` (`order_id`, `name`, `address`, `contact`, `payment_method`, `total_amount`, `product_ids`, `status`, `created_at`) VALUES
+(1, 'krishna', 'Incrocio Antonio 3, Piersilvio veneto, MB 37340', '6798679679', '0', 3771.60, '[\"30\"]', 'pending', '2025-02-10 09:25:06'),
+(2, 'bala', '3815, Shingleton Road', '89875651132', '0', 3861.40, '[\"29\",\"30\",\"31\"]', 'pending', '2025-02-10 09:49:52'),
+(3, 'deva', '3 hoog Roselinepark 821b, Marbusdam, VA 5060 FT', '456452434', '0', 13016.77, '[\"29\",\"30\",\"31\",\"48\"]', 'pending', '2025-02-10 10:27:52'),
+(4, 'sridhar', 'sidhar kovil, bustop, salem', '8464564', '0', 5383.77, '[\"31\",\"40\"]', 'pending', '2025-02-10 11:20:08');
 
 -- --------------------------------------------------------
 
@@ -137,18 +134,31 @@ INSERT INTO `product` (`Product_id`, `Name`, `Description`, `Price`, `w_data`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `sessions`
+--
+
+CREATE TABLE `sessions` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `session_token` varchar(255) NOT NULL,
+  `expires_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `transactions`
 --
 
 CREATE TABLE `transactions` (
   `id` int(11) NOT NULL,
-  `customer_name` varchar(100) DEFAULT NULL,
+  `customer_name` varchar(255) DEFAULT NULL,
   `contact` varchar(15) DEFAULT NULL,
   `address` text DEFAULT NULL,
   `payment_method` varchar(50) DEFAULT NULL,
   `total_amount` decimal(10,2) DEFAULT NULL,
-  `product_ids` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`product_ids`)),
-  `order_date` timestamp NOT NULL DEFAULT current_timestamp()
+  `product_ids` varchar(255) DEFAULT NULL,
+  `order_date` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -156,21 +166,27 @@ CREATE TABLE `transactions` (
 --
 
 INSERT INTO `transactions` (`id`, `customer_name`, `contact`, `address`, `payment_method`, `total_amount`, `product_ids`, `order_date`) VALUES
-(1, 'John Doe', '9876543210', '123 Main Street, Coimbatore', 'Cash on Delivery', 1500.00, '[1, 2, 3]', '2025-01-01 04:30:00'),
-(2, 'Alice Smith', '9123456789', '456 Oak Avenue, Coimbatore', 'UPI', 2500.00, '[4, 5, 6]', '2025-01-02 05:45:00'),
-(3, 'Bob Johnson', '9334567890', '789 Pine Road, Coimbatore', 'Cash on Delivery', 3000.00, '[7, 8, 9]', '2025-01-03 07:00:00'),
-(4, 'Carol White', '9012345678', '101 Maple Lane, Coimbatore', 'UPI', 1200.00, '[10, 11, 12]', '2025-01-04 08:15:00'),
-(5, 'David Brown', '9234567891', '202 Birch Street, Coimbatore', 'UPI', 2200.00, '[13, 14, 15]', '2025-01-05 08:30:00'),
-(6, 'Eve Green', '9345678901', '303 Cedar Boulevard, Coimbatore', 'Cash on Delivery', 1800.00, '[16, 17, 18]', '2025-01-06 09:30:00'),
-(7, 'Frank Black', '9456789012', '404 Willow Place, Coimbatore', 'Cash on Delivery', 1600.00, '[19, 20, 21]', '2025-01-07 11:00:00'),
-(8, 'Grace Adams', '9567890123', '505 Elm Avenue, Coimbatore', 'UPI', 2700.00, '[22, 23, 24]', '2025-01-08 11:45:00'),
-(9, 'Hank Taylor', '9678901234', '606 Fir Street, Coimbatore', 'Cash on Delivery', 2100.00, '[25, 26, 27]', '2025-01-09 12:30:00'),
-(10, 'Ivy King', '9789012345', '707 Cedar Drive, Coimbatore', 'UPI', 2400.00, '[28, 29, 30]', '2025-01-10 14:00:00'),
-(11, 'Jack Lee', '9890123456', '808 Pine Avenue, Coimbatore', 'UPI', 1900.00, '[31, 32, 33]', '2025-01-11 14:30:00'),
-(12, 'Kara Clark', '9901234567', '909 Oak Road, Coimbatore', 'Cash on Delivery', 1700.00, '[34, 35, 36]', '2025-01-12 15:45:00'),
-(13, 'Leo Harris', '9012345679', '1010 Maple Street, Coimbatore', 'UPI', 2800.00, '[37, 38, 39]', '2025-01-13 16:30:00'),
-(14, 'Mona Hall', '9123456780', '1111 Birch Road, Coimbatore', 'UPI', 2500.00, '[40, 41, 42]', '2025-01-14 18:00:00'),
-(15, 'Nina Scott', '9234567893', '1212 Cedar Lane, Coimbatore', 'Cash on Delivery', 2300.00, '[43, 44, 45]', '2025-01-14 19:15:00');
+(1, 'Ravi Kumar', '9876543210', 'No. 45, Kamaraj Street, Velachery, Chennai - 600042, Tamil Nadu', 'Credit Card', 1200.50, '31', '2025-02-10 10:15:30'),
+(2, 'Priya Ramesh', '9087654321', 'Flat 12B, Tower 5, Sun City Apartments, OMR, Chennai - 600100, Tamil Nadu', 'Debit Card', 850.75, '32', '2025-02-10 11:30:25'),
+(3, 'Suresh Babu', '9448321550', 'No. 78, Bharathi Nagar, Coimbatore - 641035, Tamil Nadu', 'Cash on Delivery', 500.00, '33', '2025-02-09 15:45:10'),
+(4, 'Anjali Devi', '9898765432', 'No. 5, Pudur Road, Trichy - 620015, Tamil Nadu', 'Net Banking', 2150.90, '34', '2025-02-08 12:20:40'),
+(5, 'Karthik Rajan', '9944556677', '123, Gandhi Street, Madurai - 625020, Tamil Nadu', 'UPI', 950.60, '35', '2025-02-07 18:05:55'),
+(6, 'Vidhya Krishnan', '9765432109', 'No. 12, Anna Nagar, Erode - 638001, Tamil Nadu', 'Credit Card', 3200.00, '36', '2025-02-06 09:10:30'),
+(7, 'Bharath Kumar', '9888765432', 'No. 17, Nehru Street, Tirunelveli - 627001, Tamil Nadu', 'Debit Card', 1500.25, '37', '2025-02-06 11:50:15'),
+(8, 'Meera Sharma', '9876549876', 'No. 22, Ranganathan Street, Salem - 636001, Tamil Nadu', 'Cash on Delivery', 1250.80, '38', '2025-02-05 14:40:05'),
+(9, 'Kavitha Srinivasan', '9865323456', 'No. 9, Subramaniam Street, Karaikal - 609602, Tamil Nadu', 'Credit Card', 2700.90, '39', '2025-02-05 16:30:40'),
+(10, 'Arun Prakash', '9098764321', 'No. 63, MGR Road, Taramani, Chennai - 600113, Tamil Nadu', 'Net Banking', 2000.60, '40', '2025-02-04 10:20:35'),
+(11, 'Anita Sundaram', '9456784321', 'No. 12, Sundar Nagar, Kanchipuram - 631502, Tamil Nadu', 'UPI', 950.75, '41', '2025-02-03 12:05:50'),
+(12, 'Ramesh Kumar', '9867543210', 'No. 34, Kannagi Nagar, Trichy - 620016, Tamil Nadu', 'Debit Card', 1850.40, '42', '2025-02-02 13:50:10'),
+(13, 'Latha Lakshman', '9487654321', 'No. 88, Ramesh Nagar, Pollachi - 642002, Tamil Nadu', 'Cash on Delivery', 1500.75, '43', '2025-02-02 14:30:25'),
+(14, 'Murugan Raj', '9123456789', 'No. 25, Station Road, Kumbakonam - 612001, Tamil Nadu', 'Credit Card', 1800.60, '44', '2025-02-01 11:05:40'),
+(15, 'Gokulakrishnan', '9198765432', 'No. 15, Chidambaram Street, Puducherry - 605001, Tamil Nadu', 'Debit Card', 1100.90, '45', '2025-02-01 10:25:35'),
+(16, 'Aishwarya Ravi', '9308765432', 'No. 40, Palani Road, Dindigul - 624001, Tamil Nadu', 'Cash on Delivery', 1100.10, '46', '2025-01-31 15:40:50'),
+(17, 'Sakthivel J', '9876123456', 'No. 11, Nandhi Kovil Street, Virudhunagar - 626001, Tamil Nadu', 'Net Banking', 1750.25, '47', '2025-01-30 13:15:10'),
+(18, 'Nisha Kumar', '9675432109', 'No. 17, Tidel Park Road, Coimbatore - 641023, Tamil Nadu', 'UPI', 1300.40, '48', '2025-01-29 11:50:25'),
+(19, 'Raghavan V', '9789345678', 'No. 9, Thiruvalluvar Nagar, Vellore - 632002, Tamil Nadu', 'Debit Card', 1950.80, '49', '2025-01-28 10:35:45'),
+(20, 'Shruti Narayanan', '9023456789', 'No. 33, Kamaraj Nagar, Tirupur - 641604, Tamil Nadu', 'Credit Card', 2200.60, '50', '2025-01-28 12:20:30'),
+(21, 'Bala', '9876543210', 'No. 45, Kamaraj Street, Velachery, Chennai - 600042, Tamil Nadu', 'Credit Card', 1200.50, '31', '2025-02-10 10:15:30');
 
 -- --------------------------------------------------------
 
@@ -183,18 +199,16 @@ CREATE TABLE `users` (
   `name` varchar(100) NOT NULL,
   `phone` varchar(15) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `status` varchar(30) NOT NULL,
-  `login_token` varchar(64) DEFAULT NULL
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `phone`, `password`, `status`, `login_token`) VALUES
-(1, 'haji', '9047178789', '123', '', NULL),
-(2, 'bala', '9677804820', 'bala', '', NULL),
-(3, 'krishna', '9677804820', '1234', '', NULL);
+INSERT INTO `users` (`id`, `name`, `phone`, `password`, `created_at`) VALUES
+(1, 'John Doe', '1234567890', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '2025-02-10 07:46:50'),
+(2, 'Jane Smith', '9876543210', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '2025-02-10 07:46:50');
 
 --
 -- Indexes for dumped tables
@@ -210,7 +224,7 @@ ALTER TABLE `cart`
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`order_id`);
 
 --
 -- Indexes for table `order_items`
@@ -225,6 +239,14 @@ ALTER TABLE `product`
   ADD PRIMARY KEY (`Product_id`);
 
 --
+-- Indexes for table `sessions`
+--
+ALTER TABLE `sessions`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `session_token` (`session_token`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `transactions`
 --
 ALTER TABLE `transactions`
@@ -234,7 +256,8 @@ ALTER TABLE `transactions`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `phone` (`phone`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -250,7 +273,7 @@ ALTER TABLE `cart`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `order_items`
@@ -265,16 +288,32 @@ ALTER TABLE `product`
   MODIFY `Product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
+-- AUTO_INCREMENT for table `sessions`
+--
+ALTER TABLE `sessions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `sessions`
+--
+ALTER TABLE `sessions`
+  ADD CONSTRAINT `sessions_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
