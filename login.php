@@ -1,232 +1,215 @@
 <?php
-// Include connection file
-include('connection.php');
+session_start(); // Start session
 
-// Handle Login and Registration
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['login_phone']) && isset($_POST['login_password'])) {
-        // Login Process
-        $phone = $_POST['login_phone'];
-        $password = $_POST['login_password'];
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-        // Query to check user credentials
-        $query = "SELECT * FROM users WHERE phone = '$phone'";
-        $result = mysqli_query($conn, $query);
+    // Hardcoded credentials
+    $valid_username = "kksaree";
+    $valid_password = "1234";
 
-        if (mysqli_num_rows($result) == 1) {
-            $row = mysqli_fetch_assoc($result);
-            if (password_verify($password, $row['password'])) {
-                // Successful login
-                session_start();
-                $_SESSION['user_id'] = $row['id'];
-                $_SESSION['phone'] = $phone;
-                header("Location: profile.php"); // Redirect to profile page
-                exit();
-            } else {
-                $loginError = "Invalid phone number or password.";
-            }
-        } else {
-            $loginError = "User not found.";
-        }
-    } elseif (isset($_POST['register_name']) && isset($_POST['register_phone']) && isset($_POST['register_password'])) {
-        // Registration Process
-        $name = $_POST['register_name'];
-        $phone = $_POST['register_phone'];
-        $password = password_hash($_POST['register_password'], PASSWORD_DEFAULT);
-
-        // Check if phone already exists
-        $checkQuery = "SELECT * FROM users WHERE phone = '$phone'";
-        $checkResult = mysqli_query($conn, $checkQuery);
-
-        if (mysqli_num_rows($checkResult) == 0) {
-            // Insert new user
-            $registerQuery = "INSERT INTO users (name, phone, password) VALUES ('$name', '$phone', '$password')";
-            if (mysqli_query($conn, $registerQuery)) {
-                $registerSuccess = "Registration successful! You can now log in.";
-            } else {
-                $registerError = "Registration failed. Please try again.";
-            }
-        } else {
-            $registerError = "Phone number already registered.";
-        }
+    if ($username === $valid_username && $password === $valid_password) {
+        // Set session variable
+        $_SESSION['login'] = "Success";
+        // Redirect to dashboard.php
+        header("Location: index.php");
+        exit();
+    } else {
+        // Set error message
+        $error_message = "Invalid username or password!";
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vishwa Sarees - Login & Registration</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <title>User Login</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background: #f5f6fa;
+            background: linear-gradient(135deg, #3b8d99, #6b7c93);
+            font-family: 'Poppins', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 110vh;
+            min-height: 100vh;
+            color: #fff;
+            overflow: hidden;
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Keyframe for background animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         .container {
-            background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
+            max-width: 450px;
+            animation: slideIn 1.5s ease-out;
         }
 
-        .form-group label {
-            font-weight: bold;
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
-        .btn-custom {
-            background: green !important;
-            border: none;
-            color: #fff;
-            padding: 10px;
-            border-radius: 25px;
-            transition: background 0.3s;
-        }
-
-        .btn-custom:hover {
-            background: darkgreen !important;
-            color: white !important;
-        }
-
-        .toggle-link {
-            color: #3498db;
-            cursor: pointer;
+        .login-form {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             text-align: center;
-            display: block;
-            margin-top: 10px;
-            transition: color 0.3s;
+            animation: fadeUp 0.7s ease-out;
         }
 
-        .toggle-link:hover {
-            color: #2980b9;
+        /* Keyframe for form fade-in animation */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .password-toggle {
-            position: relative;
+        .login-form h2 {
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #fff;
         }
 
-        .password-toggle .toggle-password {
-            position: absolute;
-            top: 70%;
-            right: 10px;
-            transform: translateY(-50%);
-            cursor: pointer;
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: none;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Adding transition effect for form control */
+        .form-control:focus {
+            background-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: #f6a400;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease, transform 0.2s ease;
+        }
+
+        /* Hover effect for button */
+        .btn-primary:hover {
+            background-color: #e68900;
+            transform: translateY(-5px) scale(1.05);
         }
 
         .alert {
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 5px;
+            margin-top: 15px;
+            font-size: 14px;
+            animation: slideInAlert 0.6s ease-out;
         }
 
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+        /* Keyframe for alert sliding animation */
+        @keyframes slideInAlert {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
-        .alert-danger {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+        label {
+            color: #e0e0e0;
+            font-weight: 500;
+        }
+
+        .form-label {
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .login-form .alert {
+            font-size: 14px;
         }
     </style>
 </head>
+
 <body>
-    <div class="container animate__animated animate__fadeIn">
-        <!-- Login Form -->
-        <div id="login-form" class="form-section">
-            <center>
-                <img src="./images/icons/logo1.png" alt="logo" width="150">
-            </center>
-            <br>
-            <h2 class="text-center pb-4">Login Now</h2>
-            <form method="post" action="index.php">
-                <div class="form-group">
-                    <label for="login-phone">Phone Number</label>
-                    <input type="tel" class="form-control" id="login-phone" name="login_phone" pattern="\d{10}" placeholder="Enter phone number" required>
-                    <div class="invalid-feedback">Please enter a valid 10-digit phone number (without +91).</div>
-                </div>
-                <div class="form-group password-toggle">
-                    <label for="login-password">Password</label>
-                    <input type="password" class="form-control" id="login-password" name="login_password" placeholder="Enter password" required>
-                    <span class="toggle-password" onclick="togglePasswordVisibility('login-password')">
-                        <img src="https://img.icons8.com/ios-glyphs/30/000000/visible.png" alt="Toggle Password Visibility">
-                    </span>
-                </div>
-                <button type="submit" class="btn btn-custom btn-block">Login</button>
-                <span class="toggle-link" onclick="toggleForms()">Create a new account</span>
-            </form>
-            <?php if (isset($loginError)) {
-                echo "<div class='alert alert-danger'>$loginError</div>";
-            } ?>
-        </div>
+    <div class="container">
+        <div class="login-form">
+            <h2>User Login</h2>
 
-        <!-- Registration Form -->
-        <div id="register-form" class="form-section d-none">
-            <center>
-                <img src="./images/icons/logo1.png" alt="logo" width="150">
-            </center>
-            <br>
-            <h2 class="text-center">Register</h2>
-            <form method="post" action="checkout.php">
-                <div class="form-group">
-                    <label for="register-name">Name</label>
-                    <input type="text" class="form-control" id="register-name" name="register_name"
-                        placeholder="Enter your name" required>
+            <!-- Display Error Message if Any -->
+            <?php if (isset($error_message)): ?>
+                <div class="alert alert-danger show">
+                    <strong>Error!</strong> <?= $error_message; ?>
                 </div>
-                <div class="form-group">
-                    <label for="register-phone">Phone Number</label>
-                    <input type="tel" class="form-control" id="register-phone" name="register_phone" pattern="\d{10}"
-                        placeholder="Enter phone number" required>
-                    <div class="invalid-feedback">Please enter a valid 10-digit phone number (without +91).</div>
-                </div>
-                <div class="form-group password-toggle">
-                    <label for="register-password">Password</label>
-                    <input type="password" class="form-control" id="register-password" name="register_password"
-                        placeholder="Enter password" required>
-                    <span class="toggle-password" onclick="togglePasswordVisibility('register-password')">
-                        <img src="https://img.icons8.com/ios-glyphs/30/000000/visible.png"
-                            alt="Toggle Password Visibility">
-                    </span>
-                </div>
-                <button type="submit" class="btn btn-custom btn-block">Register</button>
-                <span class="toggle-link" onclick="toggleForms()">Already have an account? Login</span>
-            </form>
-            <?php if (isset($registerSuccess)) {
-                echo "<div class='alert alert-success'>$registerSuccess</div>";
-            } ?>
-            <?php if (isset($registerError)) {
-                echo "<div class='alert alert-danger'>$registerError</div>";
-            } ?>
-        </div>
+            <?php endif; ?>
 
+            <!-- Login Form -->
+            <form action="login.php" method="POST">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required
+                    placeholder="Enter your username">
+
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required
+                    placeholder="Enter your password">
+
+                <button type="submit" class="btn btn-primary w-100 mt-3">Login</button>
+            </form>
+        </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <script>
-        // Switch between login and registration forms
-        function toggleForms() {
-            $('#login-form').toggleClass('d-none');
-            $('#register-form').toggleClass('d-none');
-        }
-
-        // Toggle password visibility
-        function togglePasswordVisibility(passwordFieldId) {
-            const passwordField = document.getElementById(passwordFieldId);
-            passwordField.type = passwordField.type === 'password' ? 'text' : 'password';
-        }
-    </script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>
+
 </html>

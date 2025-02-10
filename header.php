@@ -46,7 +46,7 @@
                 <!-- Icon header -->
                 <div class="wrap-icon-header flex-w flex-r-m">
 
-                    <a href="https://wa.me/+918012111178"
+                    <a href="https://wa.me/+919677804820"
                         class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 ">
                         <i class="fab fa-whatsapp"></i>
                     </a>
@@ -75,7 +75,7 @@
         <!-- Icon header -->
         <div class="wrap-icon-header flex-w flex-r-m m-r-15">
 
-            <a href="https://wa.me/+919994079949" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10"
+            <a href="https://wa.me/+919677804820" class="dis-block icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10"
                 data-notify="0">
                 <i class="fab fa-whatsapp"></i>
             </a>

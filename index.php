@@ -1,37 +1,13 @@
 <?php
-// Include connection file
-include('connection.php');
 session_start(); // Start session
 
-// Handle Login and Registration
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	if (isset($_POST['login_phone']) && isset($_POST['login_password'])) {
-		// Login Process
-		$phone = $_POST['login_phone'];
-		$password = $_POST['login_password'];
-
-		// Query to check user credentials
-		$query = "SELECT * FROM users WHERE phone = '$phone'";
-		$result = mysqli_query($conn, $query);
-
-		if (mysqli_num_rows($result) == 1) {
-			$row = mysqli_fetch_assoc($result);
-			if (password_verify($password, $row['password'])) {
-				// Successful login
-				$_SESSION['user_id'] = $row['id']; // Store user ID in session
-				$_SESSION['user_name'] = $row['name']; // Optionally store user name
-				$_SESSION['phone'] = $phone; // Store phone in session
-				header("Location: checkout.php"); // Redirect to checkout page
-				exit();
-			} else {
-				$loginError = "Invalid phone number or password.";
-			}
-		} else {
-			$loginError = "User not found.";
-		}
-	}
-}
-?>
+// Check if the user is authenticated
+if (!isset($_SESSION['login']) || $_SESSION['login'] !== "Success") {
+    // Redirect to login page with an error message
+    $_SESSION['error_message'] = "Please log in to access this page.";
+    header("Location: login.php");
+    exit();
+}?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -271,6 +247,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			margin-top: 1rem;
 		}
 	</style>
+
 </head>
 
 <body class="animsition">
@@ -505,107 +482,109 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 	<style>
 		/* General styling */
-.testimonials {
-  background-color: #f7f7f7;
-  padding: 60px 20px;
-  font-family: 'Roboto', sans-serif;
-}
+		.testimonials {
+			background-color: #f7f7f7;
+			padding: 60px 20px;
+			font-family: 'Roboto', sans-serif;
+		}
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 15px;
-}
+		.container {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 0 15px;
+		}
 
-h2 {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 40px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
+		h2 {
+			text-align: center;
+			font-size: 2rem;
+			font-weight: 600;
+			color: #333;
+			margin-bottom: 40px;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+		}
 
-/* Testimonial container */
-.testimonial-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 30px;
-  justify-items: center;
-}
+		/* Testimonial container */
+		.testimonial-container {
+			display: grid;
+			grid-template-columns: 1fr 1fr 1fr;
+			gap: 30px;
+			justify-items: center;
+		}
 
-.testimonial {
-  background: #fff;
-  padding: 25px;
-  border-radius: 8px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-  max-width: 350px;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+		.testimonial {
+			background: #fff;
+			padding: 25px;
+			border-radius: 8px;
+			box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+			max-width: 350px;
+			text-align: center;
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+		}
 
-.testimonial:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-}
+		.testimonial:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+		}
 
-.testimonial p {
-  font-size: 1rem;
-  color: #666;
-  line-height: 1.5;
-  margin-bottom: 20px;
-}
+		.testimonial p {
+			font-size: 1rem;
+			color: #666;
+			line-height: 1.5;
+			margin-bottom: 20px;
+		}
 
-.customer-name {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #333;
-  margin-top: 10px;
-}
+		.customer-name {
+			font-size: 1.1rem;
+			font-weight: 600;
+			color: #333;
+			margin-top: 10px;
+		}
 
-/* Responsiveness */
-@media (max-width: 768px) {
-  .testimonials {
-    padding: 40px 20px;
-  }
+		/* Responsiveness */
+		@media (max-width: 768px) {
+			.testimonials {
+				padding: 40px 20px;
+			}
 
-  .testimonial-container {
-    grid-template-columns: 1fr 1fr;
-  }
-}
+			.testimonial-container {
+				grid-template-columns: 1fr 1fr;
+			}
+		}
 
-@media (max-width: 480px) {
-  .testimonial-container {
-    grid-template-columns: 1fr;
-  }
+		@media (max-width: 480px) {
+			.testimonial-container {
+				grid-template-columns: 1fr;
+			}
 
-  h2 {
-    font-size: 1.5rem;
-  }
-}
-
+			h2 {
+				font-size: 1.5rem;
+			}
+		}
 	</style>
 	<!-- Testimonials Section -->
 	<section class="testimonials">
-  <div class="container">
-    <h2>What Our Customers Say</h2>
-    <div class="testimonial-container">
-      <div class="testimonial">
-        <p>"I absolutely love the sarees from Vishwa Sarees! The quality is top-notch and the designs are beautiful."</p>
-        <div class="customer-name">- Priya S.</div>
-      </div>
-      <div class="testimonial">
-        <p>"Great collection and excellent customer service. I highly recommend Vishwa Sarees to everyone."</p>
-        <div class="customer-name">- Anjali K.</div>
-      </div>
-      <div class="testimonial">
-        <p>"The prices are unbeatable and the sarees are just stunning. I will definitely be shopping here again."</p>
-        <div class="customer-name">- Meera R.</div>
-      </div>
-    </div>
-  </div>
-</section>
+		<div class="container">
+			<h2>What Our Customers Say</h2>
+			<div class="testimonial-container">
+				<div class="testimonial">
+					<p>"I absolutely love the sarees from Vishwa Sarees! The quality is top-notch and the designs are
+						beautiful."</p>
+					<div class="customer-name">- Priya S.</div>
+				</div>
+				<div class="testimonial">
+					<p>"Great collection and excellent customer service. I highly recommend Vishwa Sarees to everyone."
+					</p>
+					<div class="customer-name">- Anjali K.</div>
+				</div>
+				<div class="testimonial">
+					<p>"The prices are unbeatable and the sarees are just stunning. I will definitely be shopping here
+						again."</p>
+					<div class="customer-name">- Meera R.</div>
+				</div>
+			</div>
+		</div>
+	</section>
 
 
 	<!-- Footer -->
@@ -622,7 +601,7 @@ h2 {
 		<img src="images/whatsapp_PNG20.png" class="right-whatsapp" width="50px" alt="YUGINII">
 	</a>
 
-	
+
 
 	<!--===============================================================================================-->
 	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
@@ -752,102 +731,242 @@ h2 {
 		});
 	</script>
 
+	<script>
+		if (typeof jQuery == 'undefined') {
+			console.error("jQuery is not loaded!");
+		} else {
+			console.log("jQuery is loaded successfully.");
+		}
+	</script>
+	<script>
+		$(document).ready(function () {
+			setTimeout(() => {
+				if (typeof updateCartDisplay === "function") {
+					console.log("Calling updateCartDisplay...");
+					updateCartDisplay();
+				} else {
+					console.log("updateCartDisplay function not found!");
+				}
+			}, 100); // Small delay to ensure elements exist
+		});
+	</script>
+	<!-- Include jQuery if you haven't already -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			// Function to retrieve the cart data from localStorage
+			function getCartFromLocalStorage() {
+				let cart = [];
+
+				for (let i = 0; i < localStorage.length; i++) {
+					try {
+						let value = JSON.parse(localStorage.getItem(localStorage.key(i)));
+						if (Array.isArray(value)) {
+							cart = value;
+							break;
+						}
+					} catch (e) {
+						console.warn("Skipping invalid JSON:", localStorage.key(i));
+					}
+				}
+
+				return cart;
+			}
+
+			// Function to update the cart contents
+			function updateCart() {
+				let cart = getCartFromLocalStorage();
+
+				$.ajax({
+					url: 'get-cart.php',  // Backend URL to fetch the cart data
+					type: 'POST',
+					contentType: 'application/json',
+					data: JSON.stringify({ cart: cart }),  // Send cart data to backend
+					dataType: 'json',
+					success: function (data) {
+						console.log("Cart Data Received:", data);  // Debugging
+
+						let cartContainer = $('#cart-items');
+						cartContainer.empty();  // Clear old cart data
+
+						if (data.items && data.items.length > 0) {
+							let cartHtml = data.items.map(item => `
+						<li class="cart-item">
+							<img src="${item.image}" alt="${item.name}" onerror="this.onerror=null; this.src='fallback.jpg';">
+							<div class="cart-item-info">
+								<span class="cart-item-name">${item.name}</span>
+								<span class="cart-item-quantity">${item.quantity} x ₹${item.price.toFixed(2)}</span>
+							</div>
+						</li>
+					`).join('');
+
+							console.log("Generated HTML:", cartHtml);  // Debugging
+
+							cartContainer.html(cartHtml);  // Update the cart container with new items
+							$('#cart-total').text('Total: ₹' + data.total.toFixed(2));  // Update total
+						} else {
+							cartContainer.html('<p>Your cart is empty.</p>');  // Display empty message if no items
+						}
+					},
+					error: function (xhr, status, error) {
+						console.error("Error fetching cart data:", error);
+						console.error("Status:", status);
+						console.error("Response:", xhr.responseText);
+					}
+				});
+			}
+			// Trigger cart update when an element with class `.zmdi-shopping-cart` is clicked
+			$('.zmdi-shopping-cart').click(function () {
+				updateCart();  // Execute the updateCart function on click
+			});
+			// Initial cart update when page loads
+			updateCart();
+
+			// Allow external call to update the cart display (useful for adding items)
+			window.updateCartDisplay = updateCart;
+		});
+	</script>
+
+	<script>
+		// Store login data in local storage
+		function storeLoginData(userId, userName, phone) {
+			localStorage.setItem('user_id', userId);
+			localStorage.setItem('user_name', userName);
+			localStorage.setItem('phone', phone);
+		}
+
+		// Check if user is logged in
+		function checkLoginStatus() {
+			const userId = localStorage.getItem('user_id');
+			if (userId) {
+				// User is logged in
+				console.log('User is logged in');
+				// You can update UI elements here to reflect logged-in state
+			} else {
+				// User is not logged in
+				console.log('User is not logged in');
+			}
+		}
+
+		// Call this function when the page loads
+		document.addEventListener('DOMContentLoaded', function () {
+			checkLoginStatus();
+		});
+
+		// Example of how to call storeLoginData after successful login
+		// This should be called after successful PHP authentication
+		<?php if (isset($_SESSION['user_id'])): ?>
+			storeLoginData('<?php echo $_SESSION['user_id']; ?>', '<?php echo $_SESSION['user_name']; ?>', '<?php echo $_SESSION['phone']; ?>');
+		<?php endif; ?>
+	</script>
+
+<!-- Login/Register Modal -->
+<div class="modal fade" id="loginRegisterModal" tabindex="-1" role="dialog" aria-labelledby="loginRegisterModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<h5 class="modal-title" id="loginRegisterModalLabel">Login / Register</h5>
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		  <span aria-hidden="true">&times;</span>
+		</button>
+	  </div>
+	  <div class="modal-body">
+		<!-- Login Form -->
+		<form id="loginForm" action="login.php" method="post">
+		  <h3>Login</h3>
+		  <div class="form-group">
+			<input type="text" class="form-control" name="login_phone" placeholder="Phone Number" required>
+		  </div>
+		  <div class="form-group">
+			<input type="password" class="form-control" name="login_password" placeholder="Password" required>
+		  </div>
+		  <button type="submit" class="btn btn-primary">Login</button>
+		</form>
+		<hr>
+		<!-- Register Form -->
+		<form id="registerForm" action="register.php" method="post">
+		  <h3>Register</h3>
+		  <div class="form-group">
+			<input type="text" class="form-control" name="register_name" placeholder="Full Name" required>
+		  </div>
+		  <div class="form-group">
+			<input type="text" class="form-control" name="register_phone" placeholder="Phone Number" required>
+		  </div>
+		  <div class="form-group">
+			<input type="password" class="form-control" name="register_password" placeholder="Password" required>
+		  </div>
+		  <button type="submit" class="btn btn-primary">Register</button>
+		</form>
+	  </div>
+	</div>
+  </div>
+</div>
+
 <script>
-    if (typeof jQuery == 'undefined') {
-        console.error("jQuery is not loaded!");
-    } else {
-        console.log("jQuery is loaded successfully.");
-    }
-</script>
-<script>
-    $(document).ready(function () {
-        setTimeout(() => {
-            if (typeof updateCartDisplay === "function") {
-                console.log("Calling updateCartDisplay...");
-                updateCartDisplay();
-            } else {
-                console.log("updateCartDisplay function not found!");
-            }
-        }, 100); // Small delay to ensure elements exist
-    });
-</script>
-  <!-- Include jQuery if you haven't already -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
-$(document).ready(function () {
-    // Function to retrieve the cart data from localStorage
-    function getCartFromLocalStorage() {
-        let cart = [];
+$(document).ready(function() {
+	$('#loginForm').submit(function(e) {
+		e.preventDefault();
+		$.ajax({
+			url: 'login.php',
+			type: 'post',
+			data: $(this).serialize(),
+			dataType: 'json',
+			success: function(response) {
+				if (response.success) {
+					alert(response.message);
+					localStorage.setItem('user_id', response.user_id);
+					localStorage.setItem('user_name', response.user_name);
+					localStorage.setItem('phone', response.phone);
+					location.reload();
+				} else {
+					alert(response.message);
+				}
+			}
+		});
+	});
 
-        for (let i = 0; i < localStorage.length; i++) {
-            try {
-                let value = JSON.parse(localStorage.getItem(localStorage.key(i)));
-                if (Array.isArray(value)) {
-                    cart = value;
-                    break;
-                }
-            } catch (e) {
-                console.warn("Skipping invalid JSON:", localStorage.key(i));
-            }
-        }
+	$('#registerForm').submit(function(e) {
+		e.preventDefault();
+		$.ajax({
+			url: 'register.php',
+			type: 'post',
+			data: $(this).serialize(),
+			dataType: 'json',
+			success: function(response) {
+				if (response.success) {
+					alert(response.message);
+					localStorage.setItem('user_id', response.user_id);
+					localStorage.setItem('user_name', response.user_name);
+					localStorage.setItem('phone', response.phone);
+					location.reload();
+				} else {
+					alert(response.message);
+				}
+			}
+		});
+	});
 
-        return cart;
-    }
+	// Check login status
+	function checkLoginStatus() {
+		const userId = localStorage.getItem('user_id');
+		if (userId) {
+			$('.btn-outline-primary').text('Logout').attr('onclick', 'logout()');
+		}
+	}
 
-    // Function to update the cart contents
-    function updateCart() {
-        let cart = getCartFromLocalStorage();
+	// Logout function
+	window.logout = function() {
+		localStorage.removeItem('user_id');
+		localStorage.removeItem('user_name');
+		localStorage.removeItem('phone');
+		document.cookie = 'session_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+		location.reload();
+	}
 
-        $.ajax({
-            url: 'get-cart.php',  // Backend URL to fetch the cart data
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({ cart: cart }),  // Send cart data to backend
-            dataType: 'json',
-            success: function (data) {
-                console.log("Cart Data Received:", data);  // Debugging
-
-                let cartContainer = $('#cart-items');
-                cartContainer.empty();  // Clear old cart data
-
-                if (data.items && data.items.length > 0) {
-                    let cartHtml = data.items.map(item => `
-                        <li class="cart-item">
-                            <img src="${item.image}" alt="${item.name}" onerror="this.onerror=null; this.src='fallback.jpg';">
-                            <div class="cart-item-info">
-                                <span class="cart-item-name">${item.name}</span>
-                                <span class="cart-item-quantity">${item.quantity} x ₹${item.price.toFixed(2)}</span>
-                            </div>
-                        </li>
-                    `).join('');
-
-                    console.log("Generated HTML:", cartHtml);  // Debugging
-
-                    cartContainer.html(cartHtml);  // Update the cart container with new items
-                    $('#cart-total').text('Total: ₹' + data.total.toFixed(2));  // Update total
-                } else {
-                    cartContainer.html('<p>Your cart is empty.</p>');  // Display empty message if no items
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error("Error fetching cart data:", error);
-                console.error("Status:", status);
-                console.error("Response:", xhr.responseText);
-            }
-        });
-    }
-    // Trigger cart update when an element with class `.zmdi-shopping-cart` is clicked
-    $('.zmdi-shopping-cart').click(function () {
-        updateCart();  // Execute the updateCart function on click
-    });
-    // Initial cart update when page loads
-    updateCart();
-
-    // Allow external call to update the cart display (useful for adding items)
-    window.updateCartDisplay = updateCart;
+	checkLoginStatus();
 });
 </script>
-
 </body>
 
 </html>
+

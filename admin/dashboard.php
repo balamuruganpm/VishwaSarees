@@ -510,12 +510,12 @@ if (!isset($_SESSION['login']) || $_SESSION['login'] !== "Success") {
                                    <span class="nav-icon">
                                         <iconify-icon icon="solar:clipboard-list-bold-duotone"></iconify-icon>
                                    </span>
-                                   <span class="nav-text"> Category </span>
+                                   <span class="nav-text"> More Options </span>
                               </a>
                               <div class="collapse" id="sidebarCategory">
                                    <ul class="nav sub-navbar-nav">
                                         <li class="sub-nav-item">
-                                             <a class="sub-nav-link" href="./getdata.php">Get Statement</a>
+                                             <a class="sub-nav-link" href="./getdata.php">Get Invoive</a>
                                         </li>                         
                                    </ul>
                               </div>
