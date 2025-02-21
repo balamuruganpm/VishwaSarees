@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 10, 2025 at 01:17 PM
+-- Generation Time: Feb 21, 2025 at 12:46 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -66,7 +66,11 @@ INSERT INTO `orders` (`order_id`, `name`, `address`, `contact`, `payment_method`
 (1, 'krishna', 'Incrocio Antonio 3, Piersilvio veneto, MB 37340', '6798679679', '0', 3771.60, '[\"30\"]', 'pending', '2025-02-10 09:25:06'),
 (2, 'bala', '3815, Shingleton Road', '89875651132', '0', 3861.40, '[\"29\",\"30\",\"31\"]', 'pending', '2025-02-10 09:49:52'),
 (3, 'deva', '3 hoog Roselinepark 821b, Marbusdam, VA 5060 FT', '456452434', '0', 13016.77, '[\"29\",\"30\",\"31\",\"48\"]', 'pending', '2025-02-10 10:27:52'),
-(4, 'sridhar', 'sidhar kovil, bustop, salem', '8464564', '0', 5383.77, '[\"31\",\"40\"]', 'pending', '2025-02-10 11:20:08');
+(4, 'sridhar', 'sidhar kovil, bustop, salem', '8464564', '0', 5383.77, '[\"31\",\"40\"]', 'pending', '2025-02-10 11:20:08'),
+(5, 'bala', 'zssxvgh', '9876543213', '0', 9245.17, '[\"29\",\"31\",\"38\",\"35\",\"41\"]', 'pending', '2025-02-21 10:21:29'),
+(6, 'sxghjnk', 'rdtygik,l;', '9875342325', '0', 13016.77, '[\"29\",\"30\",\"31\",\"46\"]', 'pending', '2025-02-21 10:21:53'),
+(7, 'rffeggreg', 'edfrgseggr', '96735524254', '0', 3861.40, '[\"29\",\"35\"]', 'pending', '2025-02-21 11:16:30'),
+(8, 'dvd', 'dsvsd', '322564y', '0', 3771.60, '[\"30\",\"38\",\"35\"]', 'pending', '2025-02-21 11:44:06');
 
 -- --------------------------------------------------------
 
@@ -273,7 +277,7 @@ ALTER TABLE `cart`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `order_items`

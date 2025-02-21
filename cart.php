@@ -4,12 +4,11 @@
         background-color: darkgreen !important;
         color: white !important;
     }
-    .header-cart-item-img{
+    .header-cart-item-img {
         width: 100px;
         height: 100px;
-
     }
-    .header-cart-item-img img{
+    .header-cart-item-img img {
         width: 100%;
         height: 100%;
     }
@@ -20,6 +19,11 @@
         gap: 10px;
         justify-content: center;
         margin-bottom: 10px;
+    }
+
+    /* Initially hide the cart */
+    .js-panel-cart {
+        display: none;
     }
 </style>
 
@@ -44,9 +48,12 @@
             </ul>
 
             <div class="w-full">
-                <div class="header-cart-total w-full p-tb-40" id="cart-total">
+                <!-- <div class="header-cart-total w-full p-tb-40" id="cart-total">
                     Total: ₹0.00
-                </div>
+                </div> -->
+                <div class="w-full p-tb-40">
+                    by checkout you agree to our <a href="terms&condition.php">terms and conditions</a>
+                    </div>
                 <div class="header-cart-buttons flex-w w-full">
                     <a href="shoping-cart.php"
                         class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10 js-check-btn">
@@ -57,27 +64,18 @@
         </div>
     </div>
 </div>
-<!-- mark -->
+
 <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 <script>
 $(document).ready(function () {
     // Function to get the cart from localStorage
     function getCartFromLocalStorage() {
-        let cart = [];
-
-        for (let i = 0; i < localStorage.length; i++) {
-            try {
-                let value = JSON.parse(localStorage.getItem(localStorage.key(i)));
-                if (Array.isArray(value)) {
-                    cart = value;
-                    break;
-                }
-            } catch (e) {
-                console.warn("Skipping invalid JSON:", localStorage.key(i));
-            }
+        try {
+            return JSON.parse(localStorage.getItem('cart')) || [];
+        } catch (e) {
+            console.warn("Invalid cart data in localStorage:", e);
+            return [];
         }
-
-        return cart;
     }
 
     // Function to save the cart to localStorage
@@ -87,8 +85,16 @@ $(document).ready(function () {
 
     // Function to update the cart display
     function updateCart() {
-        let cart = getCartFromLocalStorage();
+        let cart = getCartFromLocalStorage(); // Fetch the cart data
 
+        // Check if the cart has any items
+        if (cart.length === 0) {
+            $('#cart-items').html('<li>Your cart is empty</li>');
+            $('#cart-total').text('Total: ₹0.00');
+            return;
+        }
+
+        // Fetch product data for each item in the cart
         $.ajax({
             url: 'get-cart.php',
             type: 'POST',
@@ -96,10 +102,8 @@ $(document).ready(function () {
             data: JSON.stringify({ cart: cart }),
             dataType: 'json',
             success: function (data) {
-                console.log("Cart Data Received:", data); // Debugging
-
                 let cartContainer = $('#cart-items');
-                cartContainer.empty(); // Clear old cart data
+                cartContainer.empty(); // Clear any previous cart data
 
                 if (data.items && data.items.length > 0) {
                     let cartHtml = data.items.map(item => `
@@ -110,10 +114,9 @@ $(document).ready(function () {
                                 <span class="cart-item-quantity">
                                     <button class="quantity-btn decrease" onclick="updateQuantity(${item.id}, -1)">&#8722;</button>
                                     ${item.quantity} x ₹${item.price.toFixed(2)}
-                                    <button class="quantity-btn increase" onclick="updateQuantity(${item.id}, 1)">&#43;</button>
+                                    
                                 </span>
                             </div>
-                            <button class="remove-btn" onclick="removeItem(${item.id})">&#10005;</button> <!-- Remove item -->
                         </li>
                     `).join('');
 
@@ -125,8 +128,6 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 console.error("Error fetching cart data:", error);
-                console.error("Status:", status);
-                console.error("Response:", xhr.responseText);
             }
         });
     }
@@ -144,33 +145,35 @@ $(document).ready(function () {
                 item.quantity = 1;
             }
 
-            // Save the updated cart to localStorage
             saveCartToLocalStorage(cart);
-
-            // Re-render the cart
-            updateCart();
+            updateCart(); // Refresh the cart display
         }
     };
 
     // Function to remove an item from the cart
     window.removeItem = function(itemId) {
         let cart = getCartFromLocalStorage();
-
-        // Remove the item from the cart
+        // Remove the item with the given itemId
         cart = cart.filter(item => item.id !== itemId);
-
-        // Save the updated cart to localStorage
+        
         saveCartToLocalStorage(cart);
-
-        // Re-render the cart
-        updateCart();
+        updateCart(); // Refresh the cart display
     };
 
-    // Update cart on page load
-    updateCart();
+    // Open Cart Button - Show Cart
+    $(".js-show-cart").on("click", function () {
+        $(".js-panel-cart").fadeIn();
+        updateCart(); // Ensure the cart data is updated when opened
+    });
 
-    // Update cart when an item is added
-    window.updateCartDisplay = updateCart;
+    // Close Cart Button - Hide Cart
+    $(".js-hide-cart").on("click", function () {
+        $(".js-panel-cart").fadeOut();
+    });
+
+    // Initial cart update when the page loads
+    updateCart(); // Load cart data initially when the page is loaded
+
 });
 
 </script>

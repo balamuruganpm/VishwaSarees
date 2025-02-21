@@ -377,80 +377,85 @@
     return minPrice;
   }
 
-  // Function to load the cart data
   function loadCart() {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
     let totalAmount = 0;
     $(".header-cart-wrapitem").empty(); // Clear the cart list
     if (cart.length === 0) {
-      $(".header-cart-wrapitem").html(
-        '<li class="header-cart-item flex-w flex-t m-b-12">Your cart is empty</li>'
-      );
-      $(".header-cart-total").text("Total: ₹0");
-      return;
+        $(".header-cart-wrapitem").html(
+            '<li class="header-cart-item flex-w flex-t m-b-12">Your cart is empty</li>'
+        );
+        $(".header-cart-total").text("Total: ₹0");
+        return;
     }
+
+    // Create an array to hold all AJAX promises
+    let ajaxPromises = [];
+
     cart.forEach(function (item) {
-      $.ajax({
-        url: "get_product_details.php",
-        type: "POST",
-        data: { product_id: item.id },
-        success: function (response) {
-          let product = JSON.parse(response);
+        let ajaxPromise = $.ajax({
+            url: "get_product_details.php",
+            type: "POST",
+            data: { product_id: item.id },
+            success: function (response) {
+                let product = JSON.parse(response);
 
-          // Calculate the price using the Calculate_price function
-          let price = Calculate_price(
-            item.quantity,
-            product.w_data,
-            product.Price,
-            product.discount_p
-          );
+                // Calculate the price using the Calculate_price function
+                let price = Calculate_price(
+                    item.quantity,
+                    product.w_data,
+                    product.Price,
+                    product.discount_p
+                );
 
-          // Calculate total price for the item
-          let itemTotal = price * item.quantity;
-          totalAmount += itemTotal;
+                // Calculate total price for the item
+                let itemTotal = price * item.quantity;
+                totalAmount += itemTotal;
 
-          // Append the item to the cart list
-          $(".header-cart-wrapitem").append(`
-                        <li class="header-cart-item flex-w flex-t m-b-12 js-cart-item" data-productid="${
-                          item.id
-                        }">
-                            <div class="header-cart-item-img js-remove-item">
-                                <img src="images/product/${
-                                  product.Img_filename1
-                                }" alt="IMG" class="">
-                            </div>
-                            <div class="header-cart-item-txt p-t-8">
-                                <button class="header-cart-item-name m-b-18 hov-cl1 trans-04 js-show-modal2" style="text-align:left" data-productid="${
-                                  item.id
-                                }">
-                                    ${product.Name}
-                                </button>
-                                <span class="header-cart-item-info">
-                                    ${item.quantity} x ₹${price.toFixed(2)}
-                                </span>
-                            </div>
-                        </li>
-                    `);
+                // Append the item to the cart list
+                $(".header-cart-wrapitem").append(`
+                    <li class="header-cart-item flex-w flex-t m-b-12 js-cart-item" data-productid="${item.id}">
+                        <div class="header-cart-item-img js-remove-item">
+                            <img src="images/product/${product.Img_filename1}" alt="IMG" class="">
+                        </div>
+                        <div class="header-cart-item-txt p-t-8">
+                            <button class="header-cart-item-name m-b-18 hov-cl1 trans-04 js-show-modal2" style="text-align:left" data-productid="${item.id}">
+                                ${product.Name}
+                            </button>
+                            <span class="header-cart-item-info">
+                                ${item.quantity} x ₹${price.toFixed(2)}
+                            </span>
+                        </div>
+                    </li>
+                `);
 
-          // Update the total amount
-          $(".header-cart-total").text("Total: ₹" + totalAmount.toFixed(2));
+                // Attach click event listener for removing the item
+                $(".js-remove-item")
+                    .last()
+                    .on("click", function () {
+                        let productId = $(this).closest(".js-cart-item").data("productid");
+                        removeItemFromCart(productId);
+                    });
+            },
+            error: function (error) {
+                console.error("Error fetching product details:", error);
+            }
+        });
 
-          // Attach click event listener for removing the item
-          $(".js-remove-item")
-            .last()
-            .on("click", function () {
-              let productId = $(this)
-                .closest(".js-cart-item")
-                .data("productid");
-              removeItemFromCart(productId);
-            });
-        },
-        error: function (error) {
-          console.error("Error fetching product details:", error);
-        },
-      });
+        // Push each AJAX promise to the array
+        ajaxPromises.push(ajaxPromise);
     });
-  }
+
+    // Wait for all AJAX requests to finish
+    Promise.all(ajaxPromises)
+        .then(function () {
+            // Update the total amount after all requests are completed
+            $(".header-cart-total").text("Total: ₹" + totalAmount.toFixed(2));
+        })
+        .catch(function (error) {
+            console.error("Error with AJAX requests:", error);
+        });
+}
 
   function loadCart2() {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];

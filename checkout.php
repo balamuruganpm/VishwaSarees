@@ -58,8 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,9 +66,87 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Checkout - Vishwa Sarees</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .checkout-container { max-width: 800px; margin: 0 auto; padding: 20px; }
-        .payment-options { margin-top: 20px; }
-        .payment-option { margin-bottom: 10px; }
+        /* Custom Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+        .checkout-container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .checkout-container h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .checkout-container h2 {
+            font-size: 1.8rem;
+            color: #555;
+        }
+        .checkout-container .list-group-item {
+            font-size: 1.1rem;
+        }
+        .payment-options {
+            margin-top: 30px;
+        }
+        .payment-option {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .payment-option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .payment-option label {
+            font-size: 1.2rem;
+            color: #333;
+        }
+        .payment-option img {
+            width: 30px;
+            margin-right: 10px;
+        }
+        .payment-option .option-label {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        .list-group-item {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .list-group-item img {
+            width: 80px;
+            margin-right: 15px;
+        }
+        .order-summary {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+        }
+        .total-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #007bff;
+        }
     </style>
 </head>
 <body>
@@ -78,26 +154,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h1>Checkout</h1>
         <h2>Order Summary</h2>
         <ul class="list-group" id="cart-items"></ul>
-        <h3 id="cart-total">Total: ₹0.00</h3>
+        <div class="order-summary">
+            <span>Total: </span><span id="cart-total" class="total-amount">₹0.00</span>
+        </div>
 
         <form method="POST" action="checkout.php">
-    <input type="hidden" name="cart_items" id="cart-items-input">
-    <input type="hidden" name="total_amount" id="total-amount-input">
+            <input type="hidden" name="cart_items" id="cart-items-input">
+            <input type="hidden" name="total_amount" id="total-amount-input">
 
-    <div class="payment-options">
-        <h2>Payment Method</h2>
-        <div class="payment-option">
-            <input type="radio" id="cod" name="payment_method" value="cod" required>
-            <label for="cod">Cash on Delivery</label>
-        </div>
-        <div class="payment-option">
-            <input type="radio" id="upi" name="payment_method" value="upi" required>
-            <label for="upi">UPI Payment</label>
-        </div>
-    </div>
-    <button type="submit" class="btn btn-primary mt-3">Place Order</button>
-</form>
-
+            <div class="payment-options">
+                <h2>Payment Method</h2>
+                <div class="payment-option">
+                    <input type="radio" id="cod" name="payment_method" value="cod" required>
+                    <img src="https://example.com/cod-icon.png" alt="Cash on Delivery">
+                    <label for="cod" class="option-label">Cash on Delivery</label>
+                </div>
+                <div class="payment-option">
+                    <input type="radio" id="upi" name="payment_method" value="upi" required>
+                    <img src="https://example.com/upi-icon.png" alt="UPI Payment">
+                    <label for="upi" class="option-label">UPI Payment</label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Place Order</button>
+        </form>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -117,16 +196,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     cart.forEach(item => {
                         cartContainer.append(`
                             <li class="list-group-item d-flex align-items-center">
-                                <div>${item.name} - ₹${item.price} x ${item.quantity}</div>
+                                <img src="${item.image}" alt="${item.name}">
+                                <div class="flex-grow-1">
+                                    <div><strong>${item.name}</strong></div>
+                                    <div>₹${item.price} x ${item.quantity}</div>
+                                </div>
                             </li>
                         `);
                         totalAmount += item.price * item.quantity;
                     });
-                    $('#cart-total').text('Total: ₹' + totalAmount.toFixed(2));
+                    $('#cart-total').text('₹' + totalAmount.toFixed(2));
                     $('#cart-items-input').val(JSON.stringify(cart));
                     $('#total-amount-input').val(totalAmount.toFixed(2));
                 } else {
-                    $('#cart-total').text('Total: ₹0.00');
+                    $('#cart-total').text('₹0.00');
                 }
             }
 
